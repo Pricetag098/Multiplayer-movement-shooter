@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 // NOTE: Do not put objects in DontDestroyOnLoad (DDOL) in Awake.  You can do that in Start instead.
 
-public class Move : NetworkBehaviour
+public class MPtest1: NetworkBehaviour
 {
     #region Start & Stop Callbacks
 
