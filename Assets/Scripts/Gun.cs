@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitscanGun : MonoBehaviour
+public class Gun : MonoBehaviour
 {
 
 	public PlayerManager player;
@@ -12,6 +12,17 @@ public class HitscanGun : MonoBehaviour
 	public Transform head;
 
 	public GameObject bloodSplat;
+
+	public GameObject bulletPrefab;
+
+	public enum Type { hitscan, projectile};
+
+	public Type type;
+
+	public enum FireMode { semiAuto, fullAuto, burst};
+
+	public FireMode fireMode;
+
 
 
     // Start is called before the first frame update
@@ -25,12 +36,12 @@ public class HitscanGun : MonoBehaviour
     {
 		if (player.isLocalPlayer)
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonDown(0) && player.alowShooting)
 			{
 				RaycastHit hit;
 				if (Physics.Raycast(head.position, transform.forward,out hit, range))
 				{
-					Debug.Log(hit.collider.transform.name);
+					//Debug.Log(hit.collider.transform.name);
 					HitBox hitBox =  hit.collider.transform.gameObject.GetComponent<HitBox>();
 					if(hitBox != null)
 					{

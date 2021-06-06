@@ -60,18 +60,34 @@ public class PlayerManager : NetworkBehaviour
 
 	#endregion
 
+	[SyncVar]
+	public bool trappable = true;
 
-	public GameObject serverBody, ClientBody,serverHolster,clientHolster;
+	public float fireRateMod = 1;
+
+	public bool alowShooting = true;
+
+
+	public GameObject serverBody, ClientBody, serverHolster, clientHolster, ui;
+	public SpellManager spells;
+
 	public GameObject blood;
+	public Movment mv;
 
 	[Header("Stats")]
 
+	
+
 	[SyncVar]
 	public float health = 100;
-	float maxHealth = 100;
+	public float maxHealth = 100;
+
+	[SyncVar]
+	public float shieldHealth = 0;
+	float shieldMaxHealth = 0;
 
 
-	
+
 
 
 	public override void OnStartClient()
@@ -80,6 +96,7 @@ public class PlayerManager : NetworkBehaviour
 		ClientBody.SetActive(isLocalPlayer);
 		serverHolster.SetActive(!isLocalPlayer);
 		clientHolster.SetActive(isLocalPlayer);
+		ui.SetActive(isLocalPlayer);
 
 		if (isServer)
 		{
@@ -88,19 +105,48 @@ public class PlayerManager : NetworkBehaviour
 	}
 	
 
-	[Command(requiresAuthority =false)]
+	[Command(requiresAuthority = false)]
 	public void CMDOnTakeDmg(float dmg, Vector3 point, Vector3 dir)
 	{
 		health -= dmg;
 		RpcOnTakeDamage(point, dir);
 	}
+
 	[ClientRpc]
 	public void RpcOnTakeDamage(Vector3 point, Vector3 dir)
 	{
-		Debug.Log(health);
+		//Debug.Log(health);
 		GameObject bloodGo = Instantiate(blood);
 		bloodGo.transform.position = point;
-		bloodGo.transform.up = dir;
+		bloodGo.transform.forward = dir;
 		Destroy(bloodGo, 5);
+	}
+
+
+	[Command(requiresAuthority = false)]
+	public void CMDHeal(float amount)
+	{
+		health += amount;
+		health = Mathf.Clamp(health, -1f, maxHealth);
+		RpcOnHeal();
+		
+	}
+
+	[Command(requiresAuthority = false)]
+	public void CMDReplenishShield(float amount)
+	{
+		shieldHealth += amount;
+		shieldHealth = Mathf.Clamp(shieldMaxHealth, -1f, shieldMaxHealth);
+	}
+	[Command(requiresAuthority =false)]
+	public void CMDChangeTrappable(bool i)
+	{
+		trappable = i;
+	}
+
+	[ClientRpc]
+	public void RpcOnHeal()
+	{
+		
 	}
 }
