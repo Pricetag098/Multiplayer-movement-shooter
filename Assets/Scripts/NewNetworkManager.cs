@@ -9,7 +9,7 @@ using Mirror;
 
 public class NewNetworkManager : NetworkManager
 {
-	SyncDictionary<NetworkConnection, int> kills = new SyncDictionary<NetworkConnection, int>();
+	//SyncDictionary<NetworkConnection, int> kills = new SyncDictionary<NetworkConnection, int>();
 	
 
     #region Unity Callbacks
@@ -174,7 +174,7 @@ public class NewNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-		kills.Add(conn, 0);
+		//kills.Add(conn, 0);
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class NewNetworkManager : NetworkManager
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         base.OnClientDisconnect(conn);
-		kills.Remove(conn);
+		//kills.Remove(conn);
     }
 
     /// <summary>
