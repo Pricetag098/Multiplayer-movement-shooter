@@ -35,7 +35,7 @@ public class Cam : MonoBehaviour
 	{
 		if(playerManager.isLocalPlayer)
 		{
-			transform.position = Vector3.Lerp(transform.position, body.position + offset, followSpeed );
+			transform.position = Vector3.Lerp(transform.position, body.position + offset, followSpeed *Time.deltaTime);
 			
 			if (mv.allowMovement)
 			{

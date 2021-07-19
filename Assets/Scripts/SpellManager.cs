@@ -92,6 +92,7 @@ public class SpellManager : NetworkBehaviour
 
 	public Material[] playerMats;
 	public Volume vol;
+	public Camera whCam;
 	
 
 	public enum Spells
@@ -143,7 +144,7 @@ public class SpellManager : NetworkBehaviour
 				}
 			case Spells.highlightPlayers:
 				{
-					passiveSpells.Add(new HighlightEnemySpell(playerMats,vol));
+					passiveSpells.Add(new HighlightEnemySpell(playerMats,vol,whCam));
 					print("DID THing");
 					break;
 				}
@@ -197,7 +198,7 @@ public class SpellManager : NetworkBehaviour
 		
 		public virtual void Cast()
 		{
-			print("CASTING COUCH");
+			
 		}
 		public virtual void UnCast()
 		{
@@ -239,10 +240,11 @@ public class SpellManager : NetworkBehaviour
 	{
 		public Material defaultMat, highlitedMat;
 		public Volume volume;
-
-		public HighlightEnemySpell(Material[] mats,Volume vol)
+		Camera whCam;
+		public HighlightEnemySpell(Material[] mats,Volume vol,Camera cam)
 		{
 			volume = vol;
+			whCam = cam;
 			defaultMat = mats[0];
 			highlitedMat = mats[1];
 		}
@@ -251,12 +253,13 @@ public class SpellManager : NetworkBehaviour
 		public override void Cast()
 		{
 			volume.enabled = true;
+			whCam.enabled = true;
 			GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 			for(int i = 0; i< players.Length; i++)
 			{
 				players[i].GetComponent<PlayerManager>().serverBody.GetComponentsInChildren<SkinnedMeshRenderer>()[0].material = highlitedMat;
 			}
-			print("CASTING hl");
+			
 			base.Cast();
 		}
 		
@@ -264,6 +267,7 @@ public class SpellManager : NetworkBehaviour
 		public override void UnCast()
 		{
 			volume.enabled = false;
+			whCam.enabled = false;
 			GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 			for (int i = 0; i < players.Length; i++)
 			{
