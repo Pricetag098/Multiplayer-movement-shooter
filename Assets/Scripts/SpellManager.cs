@@ -102,7 +102,7 @@ public class SpellManager : NetworkBehaviour
 	private void Start()
 	{
 		primaryAttackSpell = new SpellProjectile(pm);
-		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		//bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
 	}
 
 	
@@ -151,7 +151,22 @@ public class SpellManager : NetworkBehaviour
 	}
 
 
+	#region spellComands
 
+	[Command]
+	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
+	{
+		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
+		bullet.GetComponent<Rigidbody>().velocity = dir;
+		bullet.GetComponent<Projectile>().damage = damage;
+
+		NetworkServer.Spawn(bullet);
+
+	}
+
+
+	#endregion
 
 	/*
 	//healing and defence spells
@@ -221,7 +236,7 @@ public class SpellManager : NetworkBehaviour
 			}
 		}
 	}
-	*/
+	
 	public class SpellProjectile : SpellManager.Spell
 	{
 		public float damage = 35f;
@@ -263,7 +278,7 @@ public class SpellManager : NetworkBehaviour
 							).normalized;
 
 						dir = (dir + (rand * spread)).normalized * bulletSpeed;
-						CMDProjectileShoot(bulletGo, dir, fingerTip, Quaternion.Euler(head.transform.forward), damage);
+						sm.CMDProjectileShoot(bulletGo, dir, fingerTip.position, Quaternion.Euler(head.transform.forward), damage);
 						//print(ammo);
 						shootTime = 0;
 					}
@@ -272,18 +287,18 @@ public class SpellManager : NetworkBehaviour
 			}
 
 		}
-
 		[Command]
-		public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Transform origin, Quaternion rotation, float damage)
-		{
+	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Transform origin, Quaternion rotation, float damage)
+	{
 
-			GameObject bullet = NetworkManager.Instantiate(bulletGo, origin.position, rotation);
-			bullet.GetComponent<Rigidbody>().velocity = dir;
-			bullet.GetComponent<Projectile>().damage = damage;
+		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin.position, rotation);
+		bullet.GetComponent<Rigidbody>().velocity = dir;
+		bullet.GetComponent<Projectile>().damage = damage;
 
-			NetworkServer.Spawn(bullet, pm.networkConnection);
+		NetworkServer.Spawn(bullet, pm.networkConnection);
 
-		}
+	}
+		
 
 
 
@@ -307,19 +322,9 @@ public class SpellManager : NetworkBehaviour
 	float distanceFromFace = .1f, shootTime = .1f, spread = .01f, bulletSpeed = 20f;
 
 	
-
-	[Command]
-	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
-	{
-		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
-		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
-		bullet.GetComponent<Rigidbody>().velocity = dir;
-		bullet.GetComponent<Projectile>().damage = damage;
-
-		NetworkServer.Spawn(bullet);
-
-	}
-
+	
+	
+	*/
 	#endregion
 
 
@@ -331,9 +336,9 @@ public class SpellManager : NetworkBehaviour
 		{
 			if (primaryAttackSpell != null)
 			{
-				//primaryAttackSpell.Cast();
+				primaryAttackSpell.Cast();
 
-
+				/*
 				if (Input.GetMouseButtonDown(0))
 				{
 					if (shootTime >= fireRate)
@@ -361,8 +366,9 @@ public class SpellManager : NetworkBehaviour
 					}
 				}
 				shootTime += Time.deltaTime;
+				*/
 			}
-		
+
 			else
 			{
 				primaryAttackSpell = new SpellProjectile(pm);

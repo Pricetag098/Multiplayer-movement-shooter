@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-/*
+
 public class SpellProjectile : SpellManager.Spell
 {
 	public float damage = 35f;
 	public float fireRate = .1f;
 	public GameObject bulletGo;
-	float distanceFromFace = .1f, shootTime = .1f, spread = .01f, bulletSpeed = 20f;
+	float distanceFromFace = .1f, shootTime = .1f, spread = .001f, bulletSpeed = 20f;
 
 	
 	public override void init()
@@ -45,7 +45,9 @@ public class SpellProjectile : SpellManager.Spell
 						).normalized;
 
 					dir = (dir + (rand * spread)).normalized * bulletSpeed;
-					//CMDProjectileShoot(bulletGo, dir, fingerTip, Quaternion.Euler(head.transform.forward), damage);
+
+					//do on server
+					sm.CMDProjectileShoot(bulletGo, dir, fingerTip.position, Quaternion.Euler(head.transform.forward), damage);
 					//print(ammo);
 					shootTime = 0;
 				}
@@ -54,19 +56,20 @@ public class SpellProjectile : SpellManager.Spell
 		}
 		
 	}
-
+	//moved to spell Manager
+	/*
 	[Command]
-	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Transform origin, Quaternion rotation, float damage)
+	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
 	{
-
-		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin.position, rotation);
+		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
 		bullet.GetComponent<Rigidbody>().velocity = dir;
 		bullet.GetComponent<Projectile>().damage = damage;
 
-		NetworkServer.Spawn(bullet,pm.networkConnection);
+		NetworkServer.Spawn(bullet);
 
 	}
-
+	*/
 
 
 	public override void UnCast()
@@ -83,4 +86,3 @@ public class SpellProjectile : SpellManager.Spell
 
 	
 }
-*/

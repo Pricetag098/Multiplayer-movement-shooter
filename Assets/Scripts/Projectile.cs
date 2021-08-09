@@ -61,6 +61,7 @@ public class Projectile : NetworkBehaviour
 	#endregion
 	public float damage;
 
+	public float lifeTime = 0, maxLife = 5f;
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -75,9 +76,19 @@ public class Projectile : NetworkBehaviour
 		}
 
 	}
+	private void Update()
+	{
+		if (isServer)
+		{
+			if (lifeTime > maxLife)
+			{
+				NetworkServer.Destroy(gameObject);
+			}
+			lifeTime += Time.deltaTime;
+		}
+	}
 
 
-	
 	[Server]
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -86,8 +97,9 @@ public class Projectile : NetworkBehaviour
 			
 			collision.collider.gameObject.GetComponent<HitBox>().OnHit(damage, transform.position, rb.velocity);
 			print("Hit");
-			NetworkServer.Destroy(gameObject);
+			
 			
 		}
+		NetworkServer.Destroy(gameObject);
 	}
 }
