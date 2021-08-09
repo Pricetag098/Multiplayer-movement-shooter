@@ -17,10 +17,10 @@ public class UiManager : MonoBehaviour
 
 	[Header("Ui Elements")]
 	public GameObject menuPanel;
-	public GameObject manaPanel;
+	//public GameObject manaPanel;
 	public GameObject crossHair;
-	public Image passiveBar;
-	public Image activeBar;
+	//public Image passiveBar;
+	//public Image activeBar;
 	public GameObject[] menuPanels;
 
 
@@ -54,8 +54,8 @@ public class UiManager : MonoBehaviour
 
 	void ManageUi()
 	{
-		passiveBar.fillAmount = (spellManager.passiveMana / spellManager.maxPassiveMana);
-		activeBar.fillAmount = (spellManager.mana / spellManager.maxMana);
+		//passiveBar.fillAmount = (spellManager.passiveMana / spellManager.maxPassiveMana);
+		//activeBar.fillAmount = (spellManager.mana / spellManager.maxMana);
 
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -71,7 +71,7 @@ public class UiManager : MonoBehaviour
 			Cursor.lockState = CursorLockMode.Locked;
 		}
 		Cursor.visible = showMenu;
-		playerManager.alowShooting = !showMenu;
+		//playerManager.alowShooting = !showMenu;
 		playerManager.mv.allowMovement = !showMenu;
 	}
 
@@ -86,7 +86,7 @@ public class UiManager : MonoBehaviour
     {
 		ManageUi();
 		menuPanel.SetActive(showMenu);
-		manaPanel.SetActive(showMenu);
+		//manaPanel.SetActive(showMenu);
 		crossHair.SetActive(!showMenu);
 		
 		if (showMenu)

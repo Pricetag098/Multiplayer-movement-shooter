@@ -16,8 +16,8 @@ public class SpellButton : MonoBehaviour
 
 	public Image background;
 	
-	public SpellManager.Spells spell;
-
+	//public SpellManager.Spells spell;
+	/*
 	private void Start()
 	{
 		spellManager = player.GetComponent<SpellManager>();
@@ -43,4 +43,5 @@ public class SpellButton : MonoBehaviour
 		}
 		
 	}
+	*/
 }

@@ -60,15 +60,17 @@ public class PlayerManager : NetworkBehaviour
 
 	#endregion
 
+	public NetworkManager netMan;
+	public NetworkIdentity networkIdentity;
+	public NetworkConnection networkConnection;
+
 	[SyncVar]
 	public bool trappable = true;
-
-	public float fireRateMod = 1;
-
-	public bool alowShooting = true;
+	
 
 
 	public GameObject serverBody, ClientBody, serverHolster, clientHolster, ui;
+
 	public SpellManager spells;
 
 	public GameObject blood;
@@ -92,12 +94,13 @@ public class PlayerManager : NetworkBehaviour
 
 	public override void OnStartClient()
 	{
+		netMan = GameObject.FindObjectOfType<NetworkManager>();
 		serverBody.SetActive(!isLocalPlayer);
 		ClientBody.SetActive(isLocalPlayer);
 		serverHolster.SetActive(!isLocalPlayer);
 		clientHolster.SetActive(isLocalPlayer);
 		ui.SetActive(isLocalPlayer);
-
+		networkConnection = networkIdentity.connectionToServer;
 		if (isServer)
 		{
 			health = maxHealth;

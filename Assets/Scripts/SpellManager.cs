@@ -61,15 +61,13 @@ public class SpellManager : NetworkBehaviour
 
 	#endregion
 
+
+	public Spell primaryAttackSpell;
 	//temp variables
-	
 
-	[SyncVar]
-	public float passiveMana = 0;
-	[SyncVar]
-	public float maxPassiveMana = 100;
 
-	
+
+	public Transform fingerTip;
 
 	[SyncVar]
 	public float mana = 100 ;
@@ -84,32 +82,17 @@ public class SpellManager : NetworkBehaviour
 	public bool canFly = false;
 	
 	
-	public List<Spell> passiveSpells = new List<Spell>();
 
+	//public Material[] playerMats;
+	//public Volume vol;
+	//public Camera whCam;
 
-	
-	public List<Spells> pSpellList = new List<Spells>(); //for hacky solution should realy fix
-
-	public Material[] playerMats;
-	public Volume vol;
-	public Camera whCam;
-	
-
-	public enum Spells
+	[Command]
+	public void spawn(GameObject go)
 	{
-		nonPassive,
-		passiveHealing, //done
-		pasiveShielding,
-		activeShielding,
-		flight, //done
-		speedBoost, //done
-		unTrapable, //done
-		fastFiring, //done
-		aimAssist, 
-		lightRay,
-		highlightPlayers
+		NetworkServer.Spawn(go,gameObject);
 	}
-
+	
 	public override void OnStartLocalPlayer()
 	{
 		
@@ -118,83 +101,42 @@ public class SpellManager : NetworkBehaviour
 
 	private void Start()
 	{
-			
+		primaryAttackSpell = new SpellProjectile(pm);
+		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
 	}
 
-
-	//[Command(requiresAuthority = false)]
-	public void addPassiveSpell(Spells spell, float cost)
-	{
-		pSpellList.Add(spell);
-		print("Do THe thing");
-		switch (spell)
-		{
-			default:
-				{
-					print("found the error");
-					passiveSpells.Add(new Spell());
-					break;
-				}
-
-			case Spells.passiveHealing:
-				{
-					PassiveHealingSpell passiveHealingSpell = new PassiveHealingSpell(pm);
-					passiveSpells.Add(passiveHealingSpell);
-					break;
-				}
-			case Spells.highlightPlayers:
-				{
-					passiveSpells.Add(new HighlightEnemySpell(playerMats,vol,whCam));
-					print("DID THing");
-					break;
-				}
-			case Spells.flight:
-				{
-					passiveSpells.Add(new FlightSpell(pm));
-					break;
-				}
-			case Spells.speedBoost:
-				{
-					passiveSpells.Add(new AccelerateSpell(pm));
-					break;
-				}
-			case Spells.unTrapable:
-				{
-					passiveSpells.Add(new IgnoreTrapsSpell(pm));
-					break;
-				}
-			case Spells.fastFiring:
-				{
-					passiveSpells.Add(new FireRateBoostSpell(pm));
-					break;
-				}
-		}
-		passiveMana += cost;
-	}
-
-	[Command(requiresAuthority = false)]
-	public void delPassiveSpell(Spells spell, float cost)
-	{
-		int i =	pSpellList.IndexOf(spell);
-		passiveSpells[i].UnCast();
-		pSpellList.RemoveAt(i);
-		passiveSpells.RemoveAt(i);
-		passiveMana -= cost;
-	}
-
-
-
+	
+	
 	#region Spells
 
-
-	// spell classes
+	//[System.Serializable]
+	
 	public class Spell
 	{
-		
+
 		
 		public PlayerManager pm;
-		
+		public SpellManager sm;
+		public Transform head;
+		public Movment mv;
+		public Cam cam;
+		public NetworkManager networkManager;
+		public NetworkIdentity identity;
+		public bool isLocalPlayer;
+		public Transform fingerTip;
 
+		public virtual void init()
+		{
+			sm = pm.GetComponent<SpellManager>();
+			mv = pm.mv;
+			head = mv.cam;
+			cam = pm.GetComponent<Cam>();
+			networkManager = pm.netMan;
+			identity = pm.networkIdentity;
+			fingerTip = sm.fingerTip;
+			
+		}
+		
 		
 		public virtual void Cast()
 		{
@@ -204,10 +146,14 @@ public class SpellManager : NetworkBehaviour
 		{
 
 		}
+
 		
 	}
-	
 
+
+
+
+	/*
 	//healing and defence spells
 
 	public class PassiveHealingSpell : Spell
@@ -275,81 +221,104 @@ public class SpellManager : NetworkBehaviour
 			}
 		}
 	}
-
-	public class FlightSpell : Spell
+	*/
+	public class SpellProjectile : SpellManager.Spell
 	{
-		public FlightSpell(PlayerManager player)
+		public float damage = 35f;
+		public float fireRate = .1f;
+		public GameObject bulletGo;
+		float distanceFromFace = .1f, shootTime = .1f, spread = .01f, bulletSpeed = 20f;
+
+
+		public override void init()
 		{
-			pm = player;
+			base.init();
+			bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+			Debug.Log(bulletGo);
 		}
 
 		public override void Cast()
 		{
-			pm.mv.moveType = Movment.MoveTypes.flight;
+			base.Cast();
+			if (sm.isLocalPlayer)
+			{
+				if (Input.GetMouseButtonDown(0))
+				{
+					if (shootTime >= fireRate)
+					{
+						Vector3 dir = head.transform.forward;
+						RaycastHit hit;
+						if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity))
+						{
+							dir = (hit.point - fingerTip.transform.position).normalized;
+						}
+
+
+
+
+						Vector3 rand = new Vector3(
+							-Random.value + Random.value,
+							-Random.value + Random.value,
+							-Random.value + Random.value
+							).normalized;
+
+						dir = (dir + (rand * spread)).normalized * bulletSpeed;
+						CMDProjectileShoot(bulletGo, dir, fingerTip, Quaternion.Euler(head.transform.forward), damage);
+						//print(ammo);
+						shootTime = 0;
+					}
+				}
+				shootTime += Time.deltaTime;
+			}
+
 		}
+
+		[Command]
+		public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Transform origin, Quaternion rotation, float damage)
+		{
+
+			GameObject bullet = NetworkManager.Instantiate(bulletGo, origin.position, rotation);
+			bullet.GetComponent<Rigidbody>().velocity = dir;
+			bullet.GetComponent<Projectile>().damage = damage;
+
+			NetworkServer.Spawn(bullet, pm.networkConnection);
+
+		}
+
+
+
 		public override void UnCast()
 		{
-			pm.mv.moveType = Movment.MoveTypes.defult;
+			base.UnCast();
 		}
-	}
 
-	public class AccelerateSpell : Spell
-	{
-		Vector3 regSpeed;
-		Vector3 boostedSpeed;
-
-		public AccelerateSpell(PlayerManager player)
+		public SpellProjectile(PlayerManager player)
 		{
 			pm = player;
-			regSpeed = pm.mv.moveSpeed;
-			boostedSpeed = regSpeed * 1.5f;
-		}
-		public override void Cast()
-		{
-			pm.mv.moveSpeed = boostedSpeed;
-		}
-		public override void UnCast()
-		{
-			pm.mv.moveSpeed = regSpeed;
-		}
-	}
-
-	public class IgnoreTrapsSpell : Spell
-	{
-		public IgnoreTrapsSpell(PlayerManager player)
-		{
-			pm = player;
+			init();
 		}
 
-		public override void Cast()
-		{
-			pm.CMDChangeTrappable(false);
-		}
-		public override void UnCast()
-		{
-			pm.CMDChangeTrappable(true);
-		}
+
 
 	}
-	public class FireRateBoostSpell : Spell
-	{
+	public float damage = 35f;
+	public float fireRate = .1f;
+	public GameObject bulletGo;
+	float distanceFromFace = .1f, shootTime = .1f, spread = .01f, bulletSpeed = 20f;
 
-		public FireRateBoostSpell(PlayerManager player)
-		{
-			pm = player;
-		}
-
-		public override void Cast()
-		{
-			pm.fireRateMod = 1.3f;
-		}
-		public override void UnCast()
-		{
-			pm.fireRateMod = 1f;
-		}
-	}
 	
 
+	[Command]
+	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
+	{
+		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
+		bullet.GetComponent<Rigidbody>().velocity = dir;
+		bullet.GetComponent<Projectile>().damage = damage;
+
+		NetworkServer.Spawn(bullet);
+
+	}
 
 	#endregion
 
@@ -360,14 +329,47 @@ public class SpellManager : NetworkBehaviour
 	{
 		if (isLocalPlayer)
 		{
-			
+			if (primaryAttackSpell != null)
+			{
+				//primaryAttackSpell.Cast();
+
+
+				if (Input.GetMouseButtonDown(0))
+				{
+					if (shootTime >= fireRate)
+					{
+						Vector3 dir = primaryAttackSpell.head.transform.forward;
+						RaycastHit hit;
+						if (Physics.Raycast(primaryAttackSpell.head.position, primaryAttackSpell.head.transform.forward, out hit, Mathf.Infinity))
+						{
+							dir = (hit.point - fingerTip.transform.position).normalized;
+						}
+
+
+
+
+						Vector3 rand = new Vector3(
+							-Random.value + Random.value,
+							-Random.value + Random.value,
+							-Random.value + Random.value
+							).normalized;
+
+						dir = (dir + (rand * spread)).normalized * bulletSpeed;
+						CMDProjectileShoot(bulletGo, dir, fingerTip.position, Quaternion.Euler(primaryAttackSpell.head.transform.forward), damage);
+						//print(ammo);
+						shootTime = 0;
+					}
+				}
+				shootTime += Time.deltaTime;
+			}
+		
+			else
+			{
+				primaryAttackSpell = new SpellProjectile(pm);
+			}
 			
 
-			for(int i = 0 ; i < passiveSpells.Count; i++)
-			{
-				print(i);
-				passiveSpells[i].Cast();
-			}
+			
 			
 		}
 	}
