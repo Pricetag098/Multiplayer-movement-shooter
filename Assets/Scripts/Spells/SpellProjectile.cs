@@ -24,7 +24,8 @@ public class SpellProjectile : SpellManager.Spell
 		base.Cast();
 		if (sm.isLocalPlayer)
 		{
-			if (Input.GetMouseButton(0))
+            pm.handAnimator.SetInteger("HandPos", 1);
+            if (Input.GetMouseButton(0))
 			{
 				if (shootTime >= fireRate)
 				{

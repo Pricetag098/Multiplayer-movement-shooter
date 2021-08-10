@@ -178,7 +178,9 @@ MonoBehaviour:
   syncInterval: 0.1
   netMan: {fileID: 0}
   networkIdentity: {fileID: 6158310628944860704}
+  handAnimator: {fileID: 5555678289273314958}
   trappable: 1
+  canShoot: 1
   serverBody: {fileID: 8110132100254644464}
   ClientBody: {fileID: 264893496261774937}
   serverHolster: {fileID: 407739467296621411}
@@ -274,7 +276,7 @@ GameObject:
   - component: {fileID: 407739466890319559}
   - component: {fileID: 1126892110538212564}
   m_Layer: 5
-  m_Name: Passive Spell Menu
+  m_Name: Weapon Spell Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,8 +298,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.32, y: -104.174774}
-  m_SizeDelta: {x: 1321.7001, y: 726.5393}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 1700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &407739466890319558
 CanvasRenderer:
@@ -808,8 +810,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.32, y: -104.174774}
-  m_SizeDelta: {x: 1321.7001, y: 726.5393}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 1700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4826084671833977172
 CanvasRenderer:
@@ -1007,8 +1009,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.32, y: -104.174774}
-  m_SizeDelta: {x: 1321.7001, y: 726.5393}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 1700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2348992536799520581
 CanvasRenderer:
@@ -1277,7 +1279,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Active Spells
+  m_text: Ability Spells
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1988,7 +1990,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Passive Spells
+  m_text: 'Weapon Spells
 
 '
   m_isRightToLeft: 0
@@ -2838,8 +2840,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.31403, y: -106.95975}
-  m_SizeDelta: {x: -498.21997, y: 190.36035}
+  m_AnchoredPosition: {x: 0, y: -125}
+  m_SizeDelta: {x: -119.999985, y: 190.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2164141734356057249
 CanvasRenderer:
@@ -3662,7 +3664,7 @@ GameObject:
   - component: {fileID: 7760914137731249076}
   - component: {fileID: 8855722826796764002}
   m_Layer: 5
-  m_Name: Equipment Menu
+  m_Name: Contract Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3684,8 +3686,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.32, y: -104.174774}
-  m_SizeDelta: {x: 1321.7001, y: 726.5393}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 1700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4236972674548312297
 CanvasRenderer:
@@ -4518,7 +4520,7 @@ GameObject:
   - component: {fileID: 7552406174610130795}
   - component: {fileID: 8602459675362240157}
   m_Layer: 5
-  m_Name: Active Spells
+  m_Name: Ability Spells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5389,7 +5391,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5555678289273314957}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98ecffeaf925bd143b8bd1a1dbeaa587, type: 3}
   m_Name: 
@@ -5977,7 +5979,7 @@ GameObject:
   - component: {fileID: 1954570985836184371}
   - component: {fileID: 8097402867989702616}
   m_Layer: 5
-  m_Name: Passive spells
+  m_Name: Weapon spells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6437,7 +6439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Equipment
+  m_text: Contracts
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6781,7 +6783,7 @@ GameObject:
   - component: {fileID: 920204893320842157}
   - component: {fileID: 5615661833322106251}
   m_Layer: 5
-  m_Name: Active Spell Menu
+  m_Name: Ability Spell Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6803,8 +6805,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -136.32, y: -104.174774}
-  m_SizeDelta: {x: 1321.7001, y: 726.5393}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 1700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &846602425544426256
 CanvasRenderer:
@@ -7932,7 +7934,7 @@ GameObject:
   - component: {fileID: 1444545358653180101}
   - component: {fileID: 4393814652814453397}
   m_Layer: 5
-  m_Name: Equipment
+  m_Name: Contracts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

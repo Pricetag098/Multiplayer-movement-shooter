@@ -64,6 +64,8 @@ public class PlayerManager : NetworkBehaviour
 	public NetworkIdentity networkIdentity;
 	public NetworkConnection networkConnection;
 
+    public Animator handAnimator;
+
 	[SyncVar]
 	public bool trappable = true, canShoot = true;
 	
