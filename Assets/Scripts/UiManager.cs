@@ -71,7 +71,7 @@ public class UiManager : MonoBehaviour
 			Cursor.lockState = CursorLockMode.Locked;
 		}
 		Cursor.visible = showMenu;
-		//playerManager.alowShooting = !showMenu;
+		playerManager.canShoot = !showMenu;
 		playerManager.mv.allowMovement = !showMenu;
 	}
 

@@ -65,7 +65,7 @@ public class PlayerManager : NetworkBehaviour
 	public NetworkConnection networkConnection;
 
 	[SyncVar]
-	public bool trappable = true;
+	public bool trappable = true, canShoot = true;
 	
 
 

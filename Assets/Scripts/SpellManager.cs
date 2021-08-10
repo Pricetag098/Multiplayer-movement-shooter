@@ -113,9 +113,10 @@ public class SpellManager : NetworkBehaviour
 	
 	public class Spell
 	{
+        
 
-		
-		public PlayerManager pm;
+
+        public PlayerManager pm;
 		public SpellManager sm;
 		public Transform head;
 		public Movment mv;
@@ -166,9 +167,9 @@ public class SpellManager : NetworkBehaviour
 	}
 
 
-	#endregion
+    #endregion
 
-	/*
+    /*
 	//healing and defence spells
 
 	public class PassiveHealingSpell : Spell
@@ -325,10 +326,10 @@ public class SpellManager : NetworkBehaviour
 	
 	
 	*/
-	#endregion
+    #endregion
 
 
-
+    
 
 	private void Update()
 	{
@@ -336,37 +337,13 @@ public class SpellManager : NetworkBehaviour
 		{
 			if (primaryAttackSpell != null)
 			{
-				primaryAttackSpell.Cast();
+                if (pm.canShoot)
+                {
+                    primaryAttackSpell.Cast();
+                }
+				
 
-				/*
-				if (Input.GetMouseButtonDown(0))
-				{
-					if (shootTime >= fireRate)
-					{
-						Vector3 dir = primaryAttackSpell.head.transform.forward;
-						RaycastHit hit;
-						if (Physics.Raycast(primaryAttackSpell.head.position, primaryAttackSpell.head.transform.forward, out hit, Mathf.Infinity))
-						{
-							dir = (hit.point - fingerTip.transform.position).normalized;
-						}
-
-
-
-
-						Vector3 rand = new Vector3(
-							-Random.value + Random.value,
-							-Random.value + Random.value,
-							-Random.value + Random.value
-							).normalized;
-
-						dir = (dir + (rand * spread)).normalized * bulletSpeed;
-						CMDProjectileShoot(bulletGo, dir, fingerTip.position, Quaternion.Euler(primaryAttackSpell.head.transform.forward), damage);
-						//print(ammo);
-						shootTime = 0;
-					}
-				}
-				shootTime += Time.deltaTime;
-				*/
+				
 			}
 
 			else
@@ -379,4 +356,5 @@ public class SpellManager : NetworkBehaviour
 			
 		}
 	}
+   
 }

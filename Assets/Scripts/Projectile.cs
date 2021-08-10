@@ -89,10 +89,19 @@ public class Projectile : NetworkBehaviour
 	}
 
 
-	[Server]
+	
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.GetComponent<HitBox>())
+        if (!isServer)
+        {
+
+            return;
+        }
+
+        print(collision.collider.name);
+        print(collision.collider.gameObject.GetComponent<HitBox>()!=null);
+        
+		if (collision.collider.gameObject.GetComponent<HitBox>()!=null)
 		{
 			
 			collision.collider.gameObject.GetComponent<HitBox>().OnHit(damage, transform.position, rb.velocity);
@@ -102,4 +111,5 @@ public class Projectile : NetworkBehaviour
 		}
 		NetworkServer.Destroy(gameObject);
 	}
+    
 }

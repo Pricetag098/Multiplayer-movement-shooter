@@ -7,7 +7,7 @@ using Mirror;
 public class SpellProjectile : SpellManager.Spell
 {
 	public float damage = 35f;
-	public float fireRate = .1f;
+	public float fireRate = .3f;
 	public GameObject bulletGo;
 	float distanceFromFace = .1f, shootTime = .1f, spread = .001f, bulletSpeed = 20f;
 
@@ -24,7 +24,7 @@ public class SpellProjectile : SpellManager.Spell
 		base.Cast();
 		if (sm.isLocalPlayer)
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButton(0))
 			{
 				if (shootTime >= fireRate)
 				{
