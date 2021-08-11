@@ -45,6 +45,8 @@ public class Movment : MonoBehaviour
 		}
 	}
 
+
+	Vector2 slideDir;
 	private void Update()
 	{
 		if (isLocalPlayer && allowMovement)
@@ -106,21 +108,40 @@ public class Movment : MonoBehaviour
 							
 							if (dir != Vector3.zero)
 							{
-								rb.velocity = (airControl * newVel) + ((1 - airControl) * rb.velocity);
+								Vector3 newerVel = (airControl * newVel) + ((1 - airControl) * rb.velocity);
+								rb.velocity = new Vector3(newerVel.x,newVel.y,newerVel.z );
 								
 							}
 							
 						}
 						if (Input.GetKey(KeyCode.LeftControl))
 						{
+							
 							RaycastHit hit;
-							if(Physics.Raycast(feet.position, Vector3.down, out hit,5f, whatIsGround))
+							//if(!Physics.Raycast(feet.position, Vector3.down, out hit,1f, whatIsGround))
+							if(!isGrounded() && rb.velocity.x != 0 && rb.velocity.z !=0)
 							{
-								if (hit.normal != Vector3.up)
+								//if (hit.normal != Vector3.up)
+								//{
+
+								if (!isSliding)
 								{
 									isSliding = true;
+									rb.velocity = rb.velocity * 1.25f;
 								}
+								//}
+								
 							}
+							else if(dir == Vector3.zero && rb.velocity.x != 0 && rb.velocity.z != 0 && isSliding)
+							{
+								//isSliding = true;
+							}
+							else
+							{
+								isSliding = false;
+							}
+
+							
 							
 							bodyClient.transform.localScale = new Vector3(1, .5f, 1);
 							bodyClient.GetComponent<Collider>().material.dynamicFriction = 0;
