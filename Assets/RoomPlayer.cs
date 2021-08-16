@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /*
 	Documentation: https://mirror-networking.com/docs/Guides/NetworkBehaviour.html
@@ -9,9 +10,14 @@ using System.Collections.Generic;
 
 // NOTE: Do not put objects in DontDestroyOnLoad (DDOL) in Awake.  You can do that in Start instead.
 
-public class PlayerManager : NetworkBehaviour
+public class RoomPlayer : NetworkBehaviour
 {
-    	#region Start & Stop Callbacks
+	public GameObject server, client;
+	public Image img;
+
+	[SyncVar]
+	public bool svrIsReady;
+    #region Start & Stop Callbacks
 
     /// <summary>
     /// This is invoked for NetworkBehaviour objects when they become active on the server.
@@ -30,7 +36,14 @@ public class PlayerManager : NetworkBehaviour
     /// Called on every NetworkBehaviour when it is activated on a client.
     /// <para>Objects on the host have this function called, as there is a local client on the host. The values of SyncVars on object are guaranteed to be initialized correctly with the latest state from the server when this function is called on the client.</para>
     /// </summary>
-    
+    public override void OnStartClient()
+	{
+		transform.parent = GameObject.FindGameObjectWithTag("RoomParent").transform;
+		transform.localScale = Vector3.one;
+		server.SetActive(!isLocalPlayer);
+		client.SetActive(isLocalPlayer);
+
+	}
 
     /// <summary>
     /// This is invoked on clients when the server has caused this object to be destroyed.
@@ -51,7 +64,6 @@ public class PlayerManager : NetworkBehaviour
     /// </summary>
     public override void OnStartAuthority() { }
 
-
     /// <summary>
     /// This is invoked on behaviours when authority is removed.
     /// <para>When NetworkIdentity.RemoveClientAuthority is called on the server, this will be called on the client that owns the object.</para>
@@ -59,101 +71,17 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStopAuthority() { }
 
 	#endregion
-
-	public NetworkManager netMan;
-	public NetworkIdentity networkIdentity;
-	public NetworkConnection networkConnection;
-
-    public Animator handAnimator;
-
-	[SyncVar]
-	public bool trappable = true, canShoot = true;
-	
-
-
-	public GameObject serverBody, ClientBody, serverHolster, clientHolster, ui;
-
-	public SpellManager spells;
-
-	public GameObject blood;
-	public Movment mv;
-
-	[Header("Stats")]
-
-	
-
-	[SyncVar]
-	public float health = 100;
-	public float maxHealth = 100;
-
-	[SyncVar]
-	public float shieldHealth = 0;
-	float shieldMaxHealth = 0;
-
-
-
-
-
-	public override void OnStartClient()
+	bool isReady = false;
+	public void Ready()
 	{
-		//networkIdentity.netId
-
-		netMan = GameObject.FindObjectOfType<NetworkManager>();
-		serverBody.SetActive(!isLocalPlayer);
-		ClientBody.SetActive(isLocalPlayer);
-		serverHolster.SetActive(!isLocalPlayer);
-		clientHolster.SetActive(isLocalPlayer);
-		ui.SetActive(isLocalPlayer);
-		networkConnection = networkIdentity.connectionToServer;
-		if (isServer)
-		{
-			health = maxHealth;
-		}
-	}
-	
-
-	[Command(requiresAuthority = false)]
-	public void CMDOnTakeDmg(float dmg, Vector3 point, Vector3 dir)
-	{
-		health -= dmg;
-		RpcOnTakeDamage(point, dir);
+		isReady = !isReady;
+		CmdReady(isReady);
+		GetComponent<NetworkRoomPlayer>().CmdChangeReadyState(isReady);
 	}
 
-	[ClientRpc]
-	public void RpcOnTakeDamage(Vector3 point, Vector3 dir)
+	[Command]
+	void CmdReady(bool IsReady)
 	{
-		//Debug.Log(health);
-		GameObject bloodGo = Instantiate(blood);
-		bloodGo.transform.position = point;
-		bloodGo.transform.forward = dir;
-		Destroy(bloodGo, 5);
-	}
-
-
-	[Command(requiresAuthority = false)]
-	public void CMDHeal(float amount)
-	{
-		health += amount;
-		health = Mathf.Clamp(health, -1f, maxHealth);
-		RpcOnHeal();
-		
-	}
-
-	[Command(requiresAuthority = false)]
-	public void CMDReplenishShield(float amount)
-	{
-		shieldHealth += amount;
-		shieldHealth = Mathf.Clamp(shieldMaxHealth, -1f, shieldMaxHealth);
-	}
-	[Command(requiresAuthority =false)]
-	public void CMDChangeTrappable(bool i)
-	{
-		trappable = i;
-	}
-
-	[ClientRpc]
-	public void RpcOnHeal()
-	{
-		
+		svrIsReady = IsReady;
 	}
 }
