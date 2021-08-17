@@ -377,9 +377,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1794141830}
-        m_TargetAssemblyTypeName: Mirror.NetworkManager, Mirror
-        m_MethodName: StartClient
+      - m_Target: {fileID: 212714402}
+        m_TargetAssemblyTypeName: RoomUi, Assembly-CSharp
+        m_MethodName: client
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 212714400}
   - component: {fileID: 212714399}
   - component: {fileID: 212714398}
+  - component: {fileID: 212714402}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -664,6 +665,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &212714402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212714397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e42107646f7334487181c01e5765b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &472749603
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,10 +844,10 @@ RectTransform:
   m_Father: {fileID: 212714401}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 258}
-  m_SizeDelta: {x: -100, y: -980.47}
+  m_AnchoredPosition: {x: 0, y: -268.14}
+  m_SizeDelta: {x: -100, y: 145.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &484972940
 MonoBehaviour:
@@ -1107,9 +1120,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1794141830}
-        m_TargetAssemblyTypeName: Mirror.NetworkManager, Mirror
-        m_MethodName: StartServer
+      - m_Target: {fileID: 212714402}
+        m_TargetAssemblyTypeName: RoomUi, Assembly-CSharp
+        m_MethodName: Server
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1644,10 +1657,10 @@ RectTransform:
   m_Father: {fileID: 484972939}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -72.62499}
+  m_SizeDelta: {x: 0, y: 145.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468840466
 MonoBehaviour:
@@ -1664,8 +1677,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 50
     m_Right: 50
-    m_Top: 20
-    m_Bottom: 20
+    m_Top: 0
+    m_Bottom: 0
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
@@ -2032,9 +2045,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1794141830}
-        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
-        m_MethodName: ChangeIp
+      - m_Target: {fileID: 212714402}
+        m_TargetAssemblyTypeName: RoomUi, Assembly-CSharp
+        m_MethodName: changeIP
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2100,17 +2113,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784883424}
   m_CullTransparentMesh: 1
---- !u!114 &1794141830 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4408214915386040068, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
-  m_PrefabInstance: {fileID: 2379563854337866775}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e700efd413f028c4d9c766b679abe958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1830764934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,9 +2212,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1794141830}
-        m_TargetAssemblyTypeName: Mirror.NetworkManager, Mirror
-        m_MethodName: StartHost
+      - m_Target: {fileID: 212714402}
+        m_TargetAssemblyTypeName: RoomUi, Assembly-CSharp
+        m_MethodName: host
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2427,10 +2429,10 @@ RectTransform:
   m_Father: {fileID: 212714401}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 428.66632}
-  m_SizeDelta: {x: -100, y: -957.3325}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 426.83}
+  m_SizeDelta: {x: -100, y: 126.33899}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2025830492
 MonoBehaviour:
@@ -2492,6 +2494,10 @@ PrefabInstance:
     - target: {fileID: 4792225265987969857, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
       propertyPath: m_Name
       value: RoomManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4792225265987969857, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
+      propertyPath: m_TagString
+      value: NetManager
       objectReference: {fileID: 0}
     - target: {fileID: 8952512685872856511, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
       propertyPath: m_RootOrder

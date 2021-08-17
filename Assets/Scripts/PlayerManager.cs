@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /*
 	Documentation: https://mirror-networking.com/docs/Guides/NetworkBehaviour.html
@@ -58,7 +59,9 @@ public class PlayerManager : NetworkBehaviour
     /// </summary>
     public override void OnStopAuthority() { }
 
-	#endregion
+    #endregion
+    [SyncVar]
+    public string teamCode; 
 
 	public NetworkManager netMan;
 	public NetworkIdentity networkIdentity;
@@ -156,4 +159,17 @@ public class PlayerManager : NetworkBehaviour
 	{
 		
 	}
+    [Client]
+    public void Disconnect()
+    {
+        if(NetworkServer.active && NetworkClient.isConnected)
+        {
+            netMan.StopHost();
+        }
+        else if (NetworkClient.isConnected)
+        {
+            netMan.StopClient();
+        }
+        SceneManager.LoadScene(0);
+    }
 }

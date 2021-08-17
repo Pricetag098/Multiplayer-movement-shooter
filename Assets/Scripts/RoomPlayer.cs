@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class RoomPlayer : NetworkBehaviour
 {
 	public GameObject server, client;
-	public Image img;
+	public Image img,svrImg;
 
 	[SyncVar]
 	public bool svrIsReady;
@@ -71,11 +71,13 @@ public class RoomPlayer : NetworkBehaviour
     public override void OnStopAuthority() { }
 
 	#endregion
-	bool isReady = false;
+	public bool isReady = false;
 	public void Ready()
 	{
 		isReady = !isReady;
 		CmdReady(isReady);
+        img.color = isReady ? Color.green : Color.red; 
+
 		GetComponent<NetworkRoomPlayer>().CmdChangeReadyState(isReady);
 	}
 
@@ -84,4 +86,15 @@ public class RoomPlayer : NetworkBehaviour
 	{
 		svrIsReady = IsReady;
 	}
+    private void Update()
+    {
+        if (!isLocalPlayer)
+        {
+           svrImg.color = svrIsReady ? Color.green : Color.red;
+        }
+        else
+        {
+            img.color = isReady ? Color.green : Color.red;
+        }
+    }
 }

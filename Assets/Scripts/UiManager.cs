@@ -13,7 +13,7 @@ public class UiManager : MonoBehaviour
 	SpellManager spellManager;
 	PlayerManager playerManager;
 
-	NetworkManagerHUD networkManagerHUD; //hacky fix unitl i make a custom net manager
+	//NetworkManagerHUD networkManagerHUD; //hacky fix unitl i make a custom net manager
 
 	[Header("Ui Elements")]
 	public GameObject menuPanel;
@@ -31,7 +31,7 @@ public class UiManager : MonoBehaviour
 		playerManager = player.GetComponent<PlayerManager>();
 
 
-		networkManagerHUD = GameObject.FindGameObjectWithTag("NetManager").GetComponent<NetworkManagerHUD>();
+		//networkManagerHUD = GameObject.FindGameObjectWithTag("NetManager").GetComponent<NetworkManagerHUD>();
 	}
 
 	public void SetMenuScreen(int screenNo)
@@ -49,7 +49,7 @@ public class UiManager : MonoBehaviour
 		menuPanels[2].SetActive(menuScreen == 2);
 		menuPanels[3].SetActive(menuScreen == 3);
 		menuPanels[4].SetActive(menuScreen == 4);
-		networkManagerHUD.enabled = menuScreen == 4;
+		//networkManagerHUD.enabled = menuScreen == 4;
 	}
 
 	void ManageUi()
@@ -99,7 +99,7 @@ public class UiManager : MonoBehaviour
 			{
 				menuPanels[i].SetActive(false);
 			}
-			networkManagerHUD.enabled = false;
+			//networkManagerHUD.enabled = false;
 		}
     }
 	public void Exit()
