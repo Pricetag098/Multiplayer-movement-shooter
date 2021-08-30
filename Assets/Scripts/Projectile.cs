@@ -61,6 +61,8 @@ public class Projectile : NetworkBehaviour
 	#endregion
 	public float damage;
 
+    public GameObject owner;
+
 	public float lifeTime = 0, maxLife = 5f;
 	private void Start()
 	{
@@ -74,7 +76,11 @@ public class Projectile : NetworkBehaviour
 			rb.isKinematic = true;
 			//rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 		}
-
+        Collider[] playerColliders = owner.GetComponentsInChildren<Collider>(true);
+        foreach(Collider collider in playerColliders)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), collider);
+        }
 	}
 	private void Update()
 	{
@@ -86,8 +92,9 @@ public class Projectile : NetworkBehaviour
 			}
 			lifeTime += Time.deltaTime;
 		}
+        
 	}
-
+   
 
 	
 	private void OnCollisionEnter(Collision collision)
@@ -97,11 +104,14 @@ public class Projectile : NetworkBehaviour
 
             return;
         }
-
+      
+        
         print(collision.collider.name);
         print(collision.collider.gameObject.GetComponent<HitBox>()!=null);
         
-		if (collision.collider.gameObject.GetComponent<HitBox>()!=null)
+		if (collision.collider.gameObject.GetComponent<HitBox>()!=null &&
+            collision.collider.gameObject.GetComponent<HitBox>().player.teamCode
+            != owner.GetComponent<PlayerManager>().teamCode)
 		{
 			
 			collision.collider.gameObject.GetComponent<HitBox>().OnHit(damage, transform.position, rb.velocity);
@@ -109,6 +119,7 @@ public class Projectile : NetworkBehaviour
 			
 			
 		}
+        
 		NetworkServer.Destroy(gameObject);
 	}
     
