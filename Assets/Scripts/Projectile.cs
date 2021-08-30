@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -67,7 +68,7 @@ public class Projectile : NetworkBehaviour
 		rb = GetComponent<Rigidbody>();
 		if (isServer)
 		{
-
+			StartCoroutine("DeathTimer",maxLife);
 		}
 		else
 		{
@@ -76,25 +77,14 @@ public class Projectile : NetworkBehaviour
 		}
 
 	}
-	private void Update()
-	{
-		if (isServer)
-		{
-			if (lifeTime > maxLife)
-			{
-				NetworkServer.Destroy(gameObject);
-			}
-			lifeTime += Time.deltaTime;
-		}
-	}
 
 
-	
+
+	[Server]
 	private void OnCollisionEnter(Collision collision)
 	{
         if (!isServer)
         {
-
             return;
         }
 
@@ -111,5 +101,10 @@ public class Projectile : NetworkBehaviour
 		}
 		NetworkServer.Destroy(gameObject);
 	}
-    
+    public IEnumerator DeathTimer(float time)
+	{
+		
+		yield return new WaitForSecondsRealtime(time);
+		NetworkServer.Destroy(gameObject);
+	}
 }

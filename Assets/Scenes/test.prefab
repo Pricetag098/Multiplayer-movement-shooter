@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1794141828}
   m_Layer: 0
   m_Name: test
-  m_TagString: Untagged
+  m_TagString: NetManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,14 +56,15 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 7262151893141626447}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 12
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 264893496419121812, guid: 47b71812bf014df4cb95b8111e171946, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 8343424970640807424, guid: b86484052c18a7e44a502d42387ecb04, type: 3}
   showRoomGUI: 0
   minPlayers: 1
   roomPlayerPrefab: {fileID: 2107095446987430411, guid: f6dc426db88cac8458c3334dfd97b1dd, type: 3}
@@ -87,7 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Port: 7777
   NoDelay: 1
-  Interval: 10
+  Interval: 1
   FastResend: 2
   CongestionWindow: 0
   SendWindowSize: 4096

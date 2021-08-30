@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: da304673c4818c14c9d5970f8810d9b5, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2483,21 +2483,9 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 1253649530}
-    - target: {fileID: 4408214915386040068, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
-      propertyPath: spawnPrefabs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4408214915386040068, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
-      propertyPath: spawnPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 8343424970640807424, guid: b86484052c18a7e44a502d42387ecb04, type: 3}
     - target: {fileID: 4792225265987969857, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
       propertyPath: m_Name
       value: RoomManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 4792225265987969857, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
-      propertyPath: m_TagString
-      value: NetManager
       objectReference: {fileID: 0}
     - target: {fileID: 8952512685872856511, guid: 032e6d4458ad34c4886e2fff969ce2db, type: 3}
       propertyPath: m_RootOrder
