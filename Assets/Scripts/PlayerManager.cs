@@ -60,8 +60,15 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStopAuthority() { }
 
     #endregion
+
+
+    public GameManager gameManager;
+
+    public int test;
+    public LayerMask layer;
+    
     [SyncVar]
-    public string teamCode; 
+    public int teamCode; 
 
 	public NetworkManager netMan;
 	public NetworkIdentity networkIdentity;
@@ -75,6 +82,7 @@ public class PlayerManager : NetworkBehaviour
 
 
 	public GameObject serverBody, ClientBody, serverHolster, clientHolster, ui;
+    public SkinnedMeshRenderer bodyRenderer;
 
 	public SpellManager spells;
 
@@ -96,22 +104,28 @@ public class PlayerManager : NetworkBehaviour
 
 
 
-
+    
 	public override void OnStartClient()
 	{
-		//networkIdentity.netId
-
+        //networkIdentity.netId
+        gameManager = GameObject.FindObjectOfType<GameManager>();
 		netMan = GameObject.FindObjectOfType<NetworkManager>();
-		serverBody.SetActive(!isLocalPlayer);
-		ClientBody.SetActive(isLocalPlayer);
-		serverHolster.SetActive(!isLocalPlayer);
-		clientHolster.SetActive(isLocalPlayer);
+        serverBody.SetActive(true);
+        ClientBody.SetActive(isLocalPlayer);
+        serverHolster.SetActive(!isLocalPlayer);
+        if (isLocalPlayer)
+        {
+            serverBody.layer = 2;
+        }
+
+        clientHolster.SetActive(isLocalPlayer);
 		ui.SetActive(isLocalPlayer);
-		networkConnection = networkIdentity.connectionToServer;
+		
 		if (isServer)
 		{
 			health = maxHealth;
 		}
+        
 	}
 	
 
@@ -120,7 +134,18 @@ public class PlayerManager : NetworkBehaviour
 	{
 		health -= dmg;
 		RpcOnTakeDamage(point, dir);
+
+        if (health < 0f)
+        {
+            OnDeath();
+        }
+        
 	}
+
+    public void OnDeath()
+    {
+        gameManager.RespawnPlayer(this);
+    }
 
 	[ClientRpc]
 	public void RpcOnTakeDamage(Vector3 point, Vector3 dir)
@@ -172,4 +197,13 @@ public class PlayerManager : NetworkBehaviour
         }
         SceneManager.LoadScene(0);
     }
+    private void Update()
+    {
+        bodyRenderer.enabled = !isLocalPlayer;
+
+        test = layer.value;
+
+    }
+
+    
 }

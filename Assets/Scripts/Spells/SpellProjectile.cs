@@ -31,9 +31,9 @@ public class SpellProjectile : SpellManager.Spell
 				{
 					Vector3 dir = head.transform.forward;
 					RaycastHit hit;
-					if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity))
+					if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity,65))
 					{
-						dir = (hit.point - fingerTip.transform.position).normalized;
+						dir = ((hit.point + head.transform.forward *0.01f) - fingerTip.transform.position).normalized;
 					}
 
 

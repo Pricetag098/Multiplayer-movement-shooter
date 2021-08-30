@@ -1,6 +1,5 @@
 using UnityEngine;
 using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -62,36 +61,57 @@ public class Projectile : NetworkBehaviour
 	#endregion
 	public float damage;
 
+    public GameObject owner;
+
 	public float lifeTime = 0, maxLife = 5f;
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		if (isServer)
 		{
-			StartCoroutine("DeathTimer",maxLife);
+
 		}
 		else
 		{
 			rb.isKinematic = true;
 			//rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 		}
-
+        Collider[] playerColliders = owner.GetComponentsInChildren<Collider>(true);
+        foreach(Collider collider in playerColliders)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), collider);
+        }
 	}
+	private void Update()
+	{
+		if (isServer)
+		{
+			if (lifeTime > maxLife)
+			{
+				NetworkServer.Destroy(gameObject);
+			}
+			lifeTime += Time.deltaTime;
+		}
+        
+	}
+   
 
-
-
-	[Server]
+	
 	private void OnCollisionEnter(Collision collision)
 	{
         if (!isServer)
         {
+
             return;
         }
-
+      
+        
         print(collision.collider.name);
         print(collision.collider.gameObject.GetComponent<HitBox>()!=null);
         
-		if (collision.collider.gameObject.GetComponent<HitBox>()!=null)
+		if (collision.collider.gameObject.GetComponent<HitBox>()!=null &&
+            collision.collider.gameObject.GetComponent<HitBox>().player.teamCode
+            != owner.GetComponent<PlayerManager>().teamCode)
 		{
 			
 			collision.collider.gameObject.GetComponent<HitBox>().OnHit(damage, transform.position, rb.velocity);
@@ -99,12 +119,8 @@ public class Projectile : NetworkBehaviour
 			
 			
 		}
+        
 		NetworkServer.Destroy(gameObject);
 	}
-    public IEnumerator DeathTimer(float time)
-	{
-		
-		yield return new WaitForSecondsRealtime(time);
-		NetworkServer.Destroy(gameObject);
-	}
+    
 }

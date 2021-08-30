@@ -18,9 +18,10 @@ using Mirror;
 /// </summary>
 public class RoomManager : NetworkRoomManager
 {
+    public GameManager gameManager;
 	public Transform parent;
     #region Server Callbacks
-
+    
     /// <summary>
     /// This is called on the server when the server is started - including when a host is started.
     /// </summary>
@@ -45,13 +46,17 @@ public class RoomManager : NetworkRoomManager
     /// This is called on the server when a new client connects to the server.
     /// </summary>
     /// <param name="conn">The new connection.</param>
-    public override void OnRoomServerConnect(NetworkConnection conn) { }
+    public override void OnRoomServerConnect(NetworkConnection conn) {
+        gameManager.playersConnId.Add(conn.connectionId);
+    }
 
     /// <summary>
     /// This is called on the server when a client disconnects.
     /// </summary>
     /// <param name="conn">The connection that disconnected.</param>
-    public override void OnRoomServerDisconnect(NetworkConnection conn) { }
+    public override void OnRoomServerDisconnect(NetworkConnection conn) {
+        gameManager.playersConnId.Remove(conn.connectionId);
+    }
 
     /// <summary>
     /// This is called on the server when a networked scene finishes loading.
@@ -93,6 +98,7 @@ public class RoomManager : NetworkRoomManager
     {
 		//Debug.Log("Test");
 		base.OnRoomServerAddPlayer(conn);
+        
     }
 
     /// <summary>
@@ -141,7 +147,11 @@ public class RoomManager : NetworkRoomManager
     /// This is called on the client when it connects to server.
     /// </summary>
     /// <param name="conn">The connection that connected.</param>
-    public override void OnRoomClientConnect(NetworkConnection conn) { }
+    public override void OnRoomClientConnect(NetworkConnection conn) 
+    {
+
+        
+    }
 
     /// <summary>
     /// This is called on the client when disconnected from a server.
@@ -186,4 +196,6 @@ public class RoomManager : NetworkRoomManager
 		networkAddress = ip;
 	}
     #endregion
+
+    
 }

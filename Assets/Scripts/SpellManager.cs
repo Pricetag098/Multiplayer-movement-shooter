@@ -161,8 +161,9 @@ public class SpellManager : NetworkBehaviour
 		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
 		bullet.GetComponent<Rigidbody>().velocity = dir;
 		bullet.GetComponent<Projectile>().damage = damage;
+        bullet.GetComponent<Projectile>().owner = gameObject ;
 
-		NetworkServer.Spawn(bullet);
+        NetworkServer.Spawn(bullet);
 
 	}
 
