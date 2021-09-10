@@ -23,6 +23,7 @@ public class GameManager : NetworkBehaviour
     public float gameTimer;
     public float timeToStart = -10, gameDuration = 60*5;
     
+
     public enum GameStates { room,start,inGame,end}
 
     [SyncVar]
@@ -92,6 +93,7 @@ public class GameManager : NetworkBehaviour
 
     public void shufflePlayers()
     {
+        
         SyncList<PlayerManager> tempPms = playerManagers;
         for(int i = 0; i< playerManagers.Count; i++)
         {
@@ -155,7 +157,10 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    
+    public void GameEnd(int teamCode)
+    {
+        gameState = GameStates.end;
+    }
 
     
     public void RespawnPlayer(PlayerManager player)
@@ -220,6 +225,7 @@ public class GameManager : NetworkBehaviour
     public void RPCToggleBody(PlayerManager player,bool state)
     {
         player.mv.gameObject.SetActive(state);
+        //player.clientHolster.SetActive(state);
     }
 
 

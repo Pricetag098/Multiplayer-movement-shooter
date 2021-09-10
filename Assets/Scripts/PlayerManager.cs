@@ -113,10 +113,10 @@ public class PlayerManager : NetworkBehaviour
         serverBody.SetActive(true);
         ClientBody.SetActive(isLocalPlayer);
         serverHolster.SetActive(!isLocalPlayer);
-        if (isLocalPlayer)
-        {
-            serverBody.layer = 2;
-        }
+        //if (isLocalPlayer)
+        //{
+            //serverBody.layer = 2;
+        //}
 
         clientHolster.SetActive(isLocalPlayer);
 		ui.SetActive(isLocalPlayer);

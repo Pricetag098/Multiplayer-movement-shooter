@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4408214915386040068}
   - component: {fileID: 7262151893141626447}
   - component: {fileID: 1794141828}
+  - component: {fileID: 352442404}
   m_Layer: 0
   m_Name: Room manager
   m_TagString: NetManager
@@ -46,10 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
+  PersistNetworkManagerToOfflineScene: 1
   runInBackground: 1
   autoStartServerBuild: 1
-  serverTickRate: 128
+  serverTickRate: 60
   serverBatching: 1
   serverBatchInterval: 0
   offlineScene: 
@@ -69,7 +70,7 @@ MonoBehaviour:
   minPlayers: 1
   roomPlayerPrefab: {fileID: 2107095446987430411, guid: f6dc426db88cac8458c3334dfd97b1dd, type: 3}
   RoomScene: Assets/Scenes/Room.unity
-  GameplayScene: Assets/Scenes/TestScene3.unity
+  GameplayScene: Assets/Scenes/GameModeTugOfWar.unity
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
@@ -89,13 +90,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Port: 7777
   NoDelay: 1
-  Interval: 10
+  Interval: 0
   FastResend: 2
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
   debugLog: 0
-  statisticsGUI: 0
+  statisticsGUI: 1
   statisticsLog: 0
 --- !u!114 &1794141828
 MonoBehaviour:
@@ -112,3 +113,25 @@ MonoBehaviour:
   showGUI: 0
   offsetX: 0
   offsetY: 0
+--- !u!68 &352442404
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792225265987969857}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.5, y: 0}
+  - {x: 0.5, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

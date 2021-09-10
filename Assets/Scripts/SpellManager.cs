@@ -67,7 +67,7 @@ public class SpellManager : NetworkBehaviour
 
 
 
-	public Transform fingerTip;
+	public Transform fingerTip,palm;
 
 	[SyncVar]
 	public float mana = 100 ;
@@ -101,7 +101,16 @@ public class SpellManager : NetworkBehaviour
 
 	private void Start()
 	{
-		primaryAttackSpell = new SpellProjectile(pm);
+        //primaryAttackSpell = new SpellProjectile(pm);
+        if(Random.value < .5f)
+        {
+            primaryAttackSpell = new SpellLazer(pm);
+        }
+        else
+        {
+            primaryAttackSpell = new SpellProjectile(pm);
+        }
+        
 		//bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
 	}
 
@@ -124,7 +133,8 @@ public class SpellManager : NetworkBehaviour
 		public NetworkManager networkManager;
 		public NetworkIdentity identity;
 		public bool isLocalPlayer;
-		public Transform fingerTip;
+		public Transform fingerTip,palm;
+
 
 		public virtual void init()
 		{
@@ -135,6 +145,7 @@ public class SpellManager : NetworkBehaviour
 			networkManager = pm.netMan;
 			identity = pm.networkIdentity;
 			fingerTip = sm.fingerTip;
+            palm = sm.palm;
 			
 		}
 		
@@ -349,7 +360,8 @@ public class SpellManager : NetworkBehaviour
 
 			else
 			{
-				primaryAttackSpell = new SpellProjectile(pm);
+                //primaryAttackSpell = new SpellProjectile(pm);
+                primaryAttackSpell = new SpellLazer(pm);
 			}
 			
 

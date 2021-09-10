@@ -61,6 +61,8 @@ public class Projectile : NetworkBehaviour
 	#endregion
 	public float damage;
 
+
+    [SyncVar]
     public GameObject owner;
 
 	public float lifeTime = 0, maxLife = 5f;
@@ -113,11 +115,8 @@ public class Projectile : NetworkBehaviour
             collision.collider.gameObject.GetComponent<HitBox>().player.teamCode
             != owner.GetComponent<PlayerManager>().teamCode)
 		{
-			
 			collision.collider.gameObject.GetComponent<HitBox>().OnHit(damage, transform.position, rb.velocity);
 			print("Hit");
-			
-			
 		}
         
 		NetworkServer.Destroy(gameObject);
