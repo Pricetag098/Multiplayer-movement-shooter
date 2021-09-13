@@ -101,6 +101,7 @@ public class SpellManager : NetworkBehaviour
 
 	private void Start()
 	{
+        /*
         //primaryAttackSpell = new SpellProjectile(pm);
         if(Random.value < .5f)
         {
@@ -112,6 +113,7 @@ public class SpellManager : NetworkBehaviour
         }
         
 		//bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+        */
 	}
 
 	
@@ -347,22 +349,17 @@ public class SpellManager : NetworkBehaviour
 	{
 		if (isLocalPlayer)
 		{
-			if (primaryAttackSpell != null)
-			{
+            if (primaryAttackSpell != null)
+            {
                 if (pm.canShoot)
                 {
                     primaryAttackSpell.Cast();
                 }
-				
-
-				
-			}
-
-			else
-			{
-                //primaryAttackSpell = new SpellProjectile(pm);
-                primaryAttackSpell = new SpellLazer(pm);
-			}
+            }
+            else
+            {
+                pm.handAnimator.SetInteger("HandPos", 0);
+            }
 			
 
 			
