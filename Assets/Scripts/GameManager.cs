@@ -15,7 +15,9 @@ public class GameManager : NetworkBehaviour
     public SyncList<int> playersConnId = new SyncList<int>();
     public SyncList<PlayerManager> playerManagers = new SyncList<PlayerManager>();
 
-    
+    public SyncDictionary<int, string> nameDict = new SyncDictionary<int, string>();
+    public SyncDictionary<int, PlayerManager> pmDict = new SyncDictionary<int, PlayerManager>();
+    public SyncDictionary<int, RoomPlayer> rmDict = new SyncDictionary<int, RoomPlayer>();
 
     public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
@@ -89,6 +91,19 @@ public class GameManager : NetworkBehaviour
     public void OnGameStart()
     {
         
+    }
+
+    [Command]
+    public void CMDChangeName(string name,int conn)
+    {
+        if (nameDict.ContainsKey(conn))
+        {
+            nameDict[conn] = name;
+        }
+        else
+        {
+            nameDict.Add(conn, name);
+        }
     }
 
     public void shufflePlayers()
@@ -227,6 +242,11 @@ public class GameManager : NetworkBehaviour
         player.mv.gameObject.SetActive(state);
         //player.clientHolster.SetActive(state);
     }
+
+
+
+
+
 
 
     public IEnumerator DeathTimer(float time,PlayerManager player,SpawnPoint spawnPoint)

@@ -20,6 +20,9 @@ public class RoomManager : NetworkRoomManager
 {
     public GameManager gameManager;
 	public Transform parent;
+
+
+   
     #region Server Callbacks
     
     /// <summary>
@@ -48,6 +51,7 @@ public class RoomManager : NetworkRoomManager
     /// <param name="conn">The new connection.</param>
     public override void OnRoomServerConnect(NetworkConnection conn) {
         gameManager.playersConnId.Add(conn.connectionId);
+        
     }
 
     /// <summary>
@@ -56,6 +60,18 @@ public class RoomManager : NetworkRoomManager
     /// <param name="conn">The connection that disconnected.</param>
     public override void OnRoomServerDisconnect(NetworkConnection conn) {
         gameManager.playersConnId.Remove(conn.connectionId);
+        if(gameManager.rmDict.ContainsKey(conn.connectionId))
+        {
+            gameManager.rmDict.Remove(conn.connectionId);
+        }
+        if (gameManager.pmDict.ContainsKey(conn.connectionId))
+        {
+            gameManager.pmDict.Remove(conn.connectionId);
+        }
+        if (gameManager.nameDict.ContainsKey(conn.connectionId))
+        {
+            gameManager.nameDict.Remove(conn.connectionId);
+        }
     }
 
     /// <summary>
@@ -73,7 +89,10 @@ public class RoomManager : NetworkRoomManager
     public override GameObject OnRoomServerCreateRoomPlayer(NetworkConnection conn)
     {
 		print("TEST");
-        return base.OnRoomServerCreateRoomPlayer(conn);
+        
+        GameObject player = base.OnRoomServerCreateRoomPlayer(conn);
+        //gameManager.rmDict.Add(conn.connectionId, player.GetComponent<RoomPlayer>());
+        return player;
     }
 
     /// <summary>
@@ -85,7 +104,9 @@ public class RoomManager : NetworkRoomManager
     /// <returns>A new GamePlayer object.</returns>
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
-        return base.OnRoomServerCreateGamePlayer(conn, roomPlayer);
+        GameObject player = base.OnRoomServerCreateGamePlayer(conn, roomPlayer);
+        gameManager.rmDict.Add(conn.connectionId, player.GetComponent<RoomPlayer>());
+        return player;
     }
 
     /// <summary>
