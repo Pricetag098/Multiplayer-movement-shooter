@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Room.unity
     guid: 881f80d9001992f49afbf7b4d71454f9
   - enabled: 1
+    path: Assets/Scenes/GameModeTugOfWar.unity
+    guid: 7ecd87b2116ec144283870d8974907e1
+  - enabled: 1
     path: Assets/Scenes/TestScene3.unity
     guid: 7166edf212e9fbb4eb081aae669d7192
   m_configObjects: {}

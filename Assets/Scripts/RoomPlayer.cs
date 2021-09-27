@@ -15,6 +15,11 @@ public class RoomPlayer : NetworkBehaviour
 	public GameObject server, client;
 	public Image img,svrImg;
 
+    [SyncVar]
+    public int connId;
+    public GameManager gameManager;
+
+
 	[SyncVar]
 	public bool svrIsReady;
     #region Start & Stop Callbacks
@@ -42,8 +47,15 @@ public class RoomPlayer : NetworkBehaviour
 		transform.localScale = Vector3.one;
 		server.SetActive(!isLocalPlayer);
 		client.SetActive(isLocalPlayer);
+        gameManager = FindObjectOfType<GameManager>();
+        if (isServer)
+        {
+            connId = connectionToClient.connectionId;
+        }
 
-	}
+    }
+    
+
 
     /// <summary>
     /// This is invoked on clients when the server has caused this object to be destroyed.
@@ -72,13 +84,27 @@ public class RoomPlayer : NetworkBehaviour
 
 	#endregion
 	public bool isReady = false;
-	public void Ready()
+
+    public void changeName(string name)
+    {
+        //print("RoomPlayer changename");
+        gameManager.CMDChangeName(name, connId);
+    }
+
+    private void Start()
+    {
+      gameManager = FindObjectOfType<GameManager>();
+    }
+
+
+    public void Ready()
 	{
 		isReady = !isReady;
 		CmdReady(isReady);
         img.color = isReady ? Color.green : Color.red; 
 
 		GetComponent<NetworkRoomPlayer>().CmdChangeReadyState(isReady);
+       
 	}
 
 	[Command]

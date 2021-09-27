@@ -15,7 +15,9 @@ public class GameManager : NetworkBehaviour
     public SyncList<int> playersConnId = new SyncList<int>();
     public SyncList<PlayerManager> playerManagers = new SyncList<PlayerManager>();
 
-    
+    public SyncDictionary<int, string> nameDict = new SyncDictionary<int, string>();
+    public SyncDictionary<int, PlayerManager> pmDict = new SyncDictionary<int, PlayerManager>();
+    public SyncDictionary<int, RoomPlayer> rmDict = new SyncDictionary<int, RoomPlayer>();
 
     public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
@@ -23,6 +25,7 @@ public class GameManager : NetworkBehaviour
     public float gameTimer;
     public float timeToStart = -10, gameDuration = 60*5;
     
+
     public enum GameStates { room,start,inGame,end}
 
     [SyncVar]
@@ -90,8 +93,25 @@ public class GameManager : NetworkBehaviour
         
     }
 
+    [Command(requiresAuthority =false)]
+    public void CMDChangeName(string name,int conn)
+    {
+        //print("About to change name");
+        
+        if (nameDict.ContainsKey(conn))
+        {
+            nameDict[conn] = name;
+        }
+        else
+        {
+          //  print("adding key");
+            nameDict.Add(conn, name);
+        }
+    }
+
     public void shufflePlayers()
     {
+        
         SyncList<PlayerManager> tempPms = playerManagers;
         for(int i = 0; i< playerManagers.Count; i++)
         {
@@ -155,7 +175,10 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    
+    public void GameEnd(int teamCode)
+    {
+        gameState = GameStates.end;
+    }
 
     
     public void RespawnPlayer(PlayerManager player)
@@ -220,7 +243,13 @@ public class GameManager : NetworkBehaviour
     public void RPCToggleBody(PlayerManager player,bool state)
     {
         player.mv.gameObject.SetActive(state);
+        //player.clientHolster.SetActive(state);
     }
+
+
+
+
+
 
 
     public IEnumerator DeathTimer(float time,PlayerManager player,SpawnPoint spawnPoint)

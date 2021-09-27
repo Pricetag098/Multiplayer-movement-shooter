@@ -30,12 +30,14 @@ public class SpellProjectile : SpellManager.Spell
 				if (shootTime >= fireRate)
 				{
 					Vector3 dir = head.transform.forward;
+                    /*
 					RaycastHit hit;
-					if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity,65))
+                    if(rayCast(out hit,head.position))
+					//if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity,65))
 					{
 						dir = ((hit.point + head.transform.forward *0.01f) - fingerTip.transform.position).normalized;
 					}
-
+                    */
 
 
 
@@ -45,10 +47,10 @@ public class SpellProjectile : SpellManager.Spell
 						-Random.value + Random.value
 						).normalized;
 
-					dir = (dir + (rand * spread)).normalized * bulletSpeed;
+                    dir = (dir + (rand * spread)).normalized * bulletSpeed; //+ pm.mv.rb.velocity;
 
 					//do on server
-					sm.CMDProjectileShoot(bulletGo, dir, fingerTip.position, Quaternion.Euler(head.transform.forward), damage);
+					sm.CMDProjectileShoot(bulletGo, dir, head.position, Quaternion.Euler(head.transform.forward), damage);
 					//print(ammo);
 					shootTime = 0;
 				}
@@ -57,8 +59,45 @@ public class SpellProjectile : SpellManager.Spell
 		}
 		
 	}
-	//moved to spell Manager
-	/*
+    public bool rayCast(out RaycastHit Hit, Vector3 start)
+    {
+
+
+        RaycastHit hit;
+        if (Physics.Raycast(start, head.transform.forward, out hit, Mathf.Infinity, 65))
+        {
+            if (hit.collider.GetComponent<HitBox>())
+            {
+                if (hit.collider.GetComponent<HitBox>().player != pm)
+                {
+                    Hit = hit;
+                    return true;
+                }
+                else
+                {
+                    if (rayCast(out hit, hit.point + head.transform.forward * 0.01f))
+                    {
+                        Hit = hit;
+                        return true;
+                    }
+                    else
+                    {
+                        Hit = hit;
+                        return false;
+                    }
+
+                }
+
+
+            }
+
+
+        }
+        Hit = hit;
+        return false;
+    }
+    //moved to spell Manager
+    /*
 	[Command]
 	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
 	{
@@ -73,7 +112,7 @@ public class SpellProjectile : SpellManager.Spell
 	*/
 
 
-	public override void UnCast()
+    public override void UnCast()
 	{
 		base.UnCast();
 	}
