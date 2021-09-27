@@ -17,41 +17,40 @@ public class SpellLazer : SpellManager.Spell
 		base.init();
 		beamGo = Resources.Load("SpawnableProjectiles/Beam") as GameObject;
 		Debug.Log(beamGo);
+		isAuto = false;
 	}
 
 	public override void Cast()
 	{
 		base.Cast();
-		if (sm.isLocalPlayer)
+		
+        pm.handAnimator.SetInteger("HandPos", 2);
+            
+		if (shootTime >= fireRate)
 		{
-            pm.handAnimator.SetInteger("HandPos", 2);
-            if (Input.GetMouseButtonDown(0))
-			{
-				if (shootTime >= fireRate)
-				{
-                    RaycastHit hit;
-                    if (rayCast(out hit, head.position))
-                    {
-                        if (hit.collider.GetComponent<HitBox>())
-                        {
-                            hit.collider.GetComponent<HitBox>().OnHit(damage, hit.point, head.transform.forward);
-                        }
+            RaycastHit hit;
+            if (rayCast(out hit, head.position))
+            {
+                if (hit.collider.GetComponent<HitBox>())
+                {
+                    hit.collider.GetComponent<HitBox>().OnHit(damage, hit.point, head.transform.forward);
+                }
 
-                        //do on server later
-                        GameObject newBeam = GameObject.Instantiate(beamGo);
-                        LineRenderer lr =  newBeam.GetComponent<LineRenderer>();
-                        lr.SetPosition(0, palm.position);
-                        lr.SetPosition(1, hit.point);
-                        GameObject.Destroy(newBeam, 0.3f);
-                    }
-                    else
-                    {
-                        GameObject newBeam = GameObject.Instantiate(beamGo);
-                        LineRenderer lr = newBeam.GetComponent<LineRenderer>();
-                        lr.SetPosition(0, palm.position);
-                        lr.SetPosition(1, head.position + head.forward * 1000) ;
-                        GameObject.Destroy(newBeam, 0.15f);
-                    }
+                //do on server later
+                GameObject newBeam = GameObject.Instantiate(beamGo);
+                LineRenderer lr =  newBeam.GetComponent<LineRenderer>();
+                lr.SetPosition(0, palm.position);
+                lr.SetPosition(1, hit.point);
+                GameObject.Destroy(newBeam, 0.3f);
+            }
+            else
+            {
+                GameObject newBeam = GameObject.Instantiate(beamGo);
+                LineRenderer lr = newBeam.GetComponent<LineRenderer>();
+                lr.SetPosition(0, palm.position);
+                lr.SetPosition(1, head.position + head.forward * 1000) ;
+                GameObject.Destroy(newBeam, 0.15f);
+            }
                    
                     
 
@@ -60,15 +59,21 @@ public class SpellLazer : SpellManager.Spell
 
 
                     
-                    shootTime = 0;
-				}
-			}
-			shootTime += Time.deltaTime;
+            shootTime = 0;
 		}
-		
 	}
-	
-    public bool rayCast(out RaycastHit Hit,Vector3 start)
+
+	public override void tick()
+	{
+		base.tick();
+		shootTime += Time.deltaTime;
+	}
+
+
+
+
+
+	public bool rayCast(out RaycastHit Hit,Vector3 start)
     {
         
         

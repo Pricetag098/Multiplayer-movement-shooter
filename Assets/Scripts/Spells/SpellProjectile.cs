@@ -8,58 +8,69 @@ public class SpellProjectile : SpellManager.Spell
 {
 	public float damage = 35f;
 	public float fireRate = .3f;
-	public GameObject bulletGo;
+	public string bulletGo = "SpawnableProjectiles/MagicProjectile";
 	float distanceFromFace = .1f, shootTime = .1f, spread = .001f, bulletSpeed = 20f;
 
 	
 	public override void init()
 	{
 		base.init();
-		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		//bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
 		Debug.Log(bulletGo);
+		isAuto = true;
 	}
 
 	public override void Cast()
 	{
 		base.Cast();
-		if (sm.isLocalPlayer)
-		{
-            pm.handAnimator.SetInteger("HandPos", 1);
-            if (Input.GetMouseButton(0))
+		
+        pm.handAnimator.SetInteger("HandPos", 1);
+            
+			if (shootTime >= fireRate)
 			{
-				if (shootTime >= fireRate)
+				Vector3 dir = head.transform.forward;
+                /*
+				RaycastHit hit;
+                if(rayCast(out hit,head.position))
+				//if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity,65))
 				{
-					Vector3 dir = head.transform.forward;
-                    /*
-					RaycastHit hit;
-                    if(rayCast(out hit,head.position))
-					//if (Physics.Raycast(head.position, head.transform.forward, out hit, Mathf.Infinity,65))
-					{
-						dir = ((hit.point + head.transform.forward *0.01f) - fingerTip.transform.position).normalized;
-					}
-                    */
-
-
-
-					Vector3 rand = new Vector3(
-						-Random.value + Random.value,
-						-Random.value + Random.value,
-						-Random.value + Random.value
-						).normalized;
-
-                    dir = (dir + (rand * spread)).normalized * bulletSpeed; //+ pm.mv.rb.velocity;
-
-					//do on server
-					sm.CMDProjectileShoot(bulletGo, dir, head.position, Quaternion.Euler(head.transform.forward), damage);
-					//print(ammo);
-					shootTime = 0;
+					dir = ((hit.point + head.transform.forward *0.01f) - fingerTip.transform.position).normalized;
 				}
+                */
+
+
+
+				Vector3 rand = new Vector3(
+					-Random.value + Random.value,
+					-Random.value + Random.value,
+					-Random.value + Random.value
+					).normalized;
+
+                dir = (dir + (rand * spread)).normalized * bulletSpeed; //+ pm.mv.rb.velocity;
+
+				//do on server
+				sm.CMDProjectileShoot(bulletGo, dir, head.position, Quaternion.Euler(head.transform.forward), damage);
+				//print(ammo);
+				shootTime = 0;
 			}
-			shootTime += Time.deltaTime;
-		}
+			
+			
+		
 		
 	}
-    public bool rayCast(out RaycastHit Hit, Vector3 start)
+	public override void tick()
+	{
+		base.tick();
+		shootTime += Time.deltaTime;
+	}
+
+	public override float getCharge()
+	{
+		return 0;
+	}
+
+
+	public bool rayCast(out RaycastHit Hit, Vector3 start)
     {
 
 

@@ -21,10 +21,12 @@ public class SpellButton : MonoBehaviour
   
     public enum SpellTypes { attack,ability}
     public SpellTypes spellType;
-    public enum Spells
+
+	public enum Spells
     {
         Lazer,
-        Projectile
+        Projectile,
+		Barrier
     }
     public Spells spellSelected;
 
@@ -45,7 +47,12 @@ public class SpellButton : MonoBehaviour
                     spell = new SpellProjectile(player.GetComponent<PlayerManager>());
                     break;
                 }
-        }
+			case Spells.Barrier:
+				{
+					spell = new SpellBarrier(player.GetComponent<PlayerManager>());
+					break;
+				}
+		}
         
 	}
 
@@ -60,6 +67,18 @@ public class SpellButton : MonoBehaviour
                         spellManager.primaryAttackSpell = null;
                         break;
                     }
+				case SpellTypes.ability:
+					{
+						for (int i = 0; i < 3; i++)
+						{
+							if (spellManager.ablitys[i] == spell)
+							{
+								spellManager.ablitys[i] = null;
+								break;
+							}
+						}
+						break;
+					}
             }
         }
         else
@@ -71,7 +90,19 @@ public class SpellButton : MonoBehaviour
                         spellManager.primaryAttackSpell = spell;
                         break;
                     }
-            }
+				case SpellTypes.ability:
+					{
+						for(int i = 0; i < 3; i++)
+						{
+							if(spellManager.ablitys[i] == null)
+							{
+								spellManager.ablitys[i] = spell;
+								break;
+							}
+						}
+						break;
+					}
+			}
         }
         
     }
@@ -84,7 +115,23 @@ public class SpellButton : MonoBehaviour
                     isEnabled = spellManager.primaryAttackSpell == spell;
                     break;
                 }
-        }
+			case SpellTypes.ability:
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						if (spellManager.ablitys[i] == spell)
+						{
+							isEnabled = true;
+							break;
+						}
+						else
+						{
+							isEnabled = false;
+						}
+					}
+					break;
+				}
+		}
         if (isEnabled) { background.color = Color.green; }
         else { background.color = Color.red; }
     }

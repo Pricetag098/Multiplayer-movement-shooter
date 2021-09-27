@@ -63,8 +63,18 @@ public class SpellManager : NetworkBehaviour
 
 
 	public Spell primaryAttackSpell;
-	//temp variables
+	public Spell[] ablitys = new Spell[3];
+	public KeyCode[] abilityKeys =
+	{
+		KeyCode.E,
+		KeyCode.Q,
+		KeyCode.F
+	};
+		
 
+		
+	//temp variables
+	
 
 
 	public Transform fingerTip,palm;
@@ -136,7 +146,7 @@ public class SpellManager : NetworkBehaviour
 		public NetworkIdentity identity;
 		public bool isLocalPlayer;
 		public Transform fingerTip,palm;
-
+		public bool isAuto;
 
 		public virtual void init()
 		{
@@ -151,10 +161,20 @@ public class SpellManager : NetworkBehaviour
 			
 		}
 		
+		public virtual void tick()
+		{
+
+		}
 		
 		public virtual void Cast()
 		{
 			
+		}
+		
+
+		public virtual float getCharge()
+		{
+			return 0;
 		}
 		public virtual void UnCast()
 		{
@@ -168,9 +188,9 @@ public class SpellManager : NetworkBehaviour
 	#region spellComands
 
 	[Command]
-	public void CMDProjectileShoot(GameObject bulletGo, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
+	public void CMDProjectileShoot(string bulletPath, Vector3 dir, Vector3 origin, Quaternion rotation, float damage)
 	{
-		bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
+		GameObject bulletGo = Resources.Load(bulletPath) as GameObject;
 		GameObject bullet = NetworkManager.Instantiate(bulletGo, origin, rotation);
 		bullet.GetComponent<Rigidbody>().velocity = dir;
 		bullet.GetComponent<Projectile>().damage = damage;
@@ -179,7 +199,14 @@ public class SpellManager : NetworkBehaviour
         NetworkServer.Spawn(bullet);
 
 	}
-
+	[Command]
+	public void CMDSpawnObject(string objectPath,Vector3 point)
+	{
+		
+		GameObject obj = Resources.Load(objectPath) as GameObject;
+		GameObject objct = NetworkManager.Instantiate(obj,point,Quaternion.Euler(Vector3.zero));
+		NetworkServer.Spawn(objct);
+	}
 
     #endregion
 
@@ -340,6 +367,10 @@ public class SpellManager : NetworkBehaviour
 	
 	
 	*/
+
+
+	
+
     #endregion
 
 
@@ -347,24 +378,63 @@ public class SpellManager : NetworkBehaviour
 
 	private void Update()
 	{
-		if (isLocalPlayer)
+		if (isLocalPlayer && pm.canShoot)
 		{
-            if (primaryAttackSpell != null)
-            {
-                if (pm.canShoot)
-                {
-                    primaryAttackSpell.Cast();
-                }
-            }
-            else
-            {
-                pm.handAnimator.SetInteger("HandPos", 0);
-            }
+			if (primaryAttackSpell != null)
+			{
+				primaryAttackSpell.tick();
+
+				if (primaryAttackSpell.isAuto)
+				{
+					if (Input.GetMouseButton(0))
+					{
+						primaryAttackSpell.Cast();
+					}
+				}
+				else
+				{
+					if (Input.GetMouseButtonDown(0))
+					{
+						primaryAttackSpell.Cast();
+					}
+				}
+
+
+			}
+			else
+			{
+				pm.handAnimator.SetInteger("HandPos", 0);
+			}
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (ablitys[i] != null)
+				{
+					ablitys[i].tick();
+
+					if (ablitys[i].isAuto)
+					{
+						if (Input.GetKey(abilityKeys[i]))
+						{
+							ablitys[i].Cast();
+						}
+					}
+					else
+					{
+						if (Input.GetKeyDown(abilityKeys[i]))
+						{
+							ablitys[i].Cast();
+						}
+					}
+				}
+			}
+		}
+		
 			
 
 			
 			
-		}
+		
 	}
    
 }
