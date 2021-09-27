@@ -15,6 +15,8 @@ public class RoomPlayer : NetworkBehaviour
 	public GameObject server, client;
 	public Image img,svrImg;
 
+    [SyncVar]
+    public int connId;
     public GameManager gameManager;
 
 
@@ -45,8 +47,15 @@ public class RoomPlayer : NetworkBehaviour
 		transform.localScale = Vector3.one;
 		server.SetActive(!isLocalPlayer);
 		client.SetActive(isLocalPlayer);
+        gameManager = FindObjectOfType<GameManager>();
+        if (isServer)
+        {
+            connId = connectionToClient.connectionId;
+        }
 
-	}
+    }
+    
+
 
     /// <summary>
     /// This is invoked on clients when the server has caused this object to be destroyed.
@@ -78,7 +87,8 @@ public class RoomPlayer : NetworkBehaviour
 
     public void changeName(string name)
     {
-        gameManager.CMDChangeName(name, GetComponent<NetworkIdentity>().connectionToClient.connectionId);
+        //print("RoomPlayer changename");
+        gameManager.CMDChangeName(name, connId);
     }
 
     private void Start()

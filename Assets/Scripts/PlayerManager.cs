@@ -60,9 +60,11 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStopAuthority() { }
 
     #endregion
-
+    public int connId;
 
     public GameManager gameManager;
+
+    public nameDisplay nameDisp;
 
     public int test;
     public LayerMask layer;
@@ -124,8 +126,9 @@ public class PlayerManager : NetworkBehaviour
 		if (isServer)
 		{
 			health = maxHealth;
+            connId = connectionToClient.connectionId;
 		}
-        
+        nameDisp.Begin();
 	}
 	
 

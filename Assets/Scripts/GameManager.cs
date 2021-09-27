@@ -93,15 +93,18 @@ public class GameManager : NetworkBehaviour
         
     }
 
-    [Command]
+    [Command(requiresAuthority =false)]
     public void CMDChangeName(string name,int conn)
     {
+        //print("About to change name");
+        
         if (nameDict.ContainsKey(conn))
         {
             nameDict[conn] = name;
         }
         else
         {
+          //  print("adding key");
             nameDict.Add(conn, name);
         }
     }

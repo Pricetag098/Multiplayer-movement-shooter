@@ -104,8 +104,13 @@ public class RoomManager : NetworkRoomManager
     /// <returns>A new GamePlayer object.</returns>
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
+        
         GameObject player = base.OnRoomServerCreateGamePlayer(conn, roomPlayer);
+        /*
+        player.GetComponent<RoomPlayer>().connId = conn.connectionId;
         gameManager.rmDict.Add(conn.connectionId, player.GetComponent<RoomPlayer>());
+        */
+        //player.GetComponent<PlayerManager>().connId = conn.identity.connectionToClient.connectionId;
         return player;
     }
 
@@ -132,6 +137,7 @@ public class RoomManager : NetworkRoomManager
     /// <returns>False to not allow this player to replace the room player.</returns>
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
+        
         return base.OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer);
     }
 
@@ -203,6 +209,7 @@ public class RoomManager : NetworkRoomManager
     /// </summary>
     public override void OnRoomClientAddPlayerFailed() { }
 
+    
     #endregion
 
     #region Optional UI

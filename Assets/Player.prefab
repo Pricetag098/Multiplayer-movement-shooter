@@ -179,7 +179,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  connId: -1
   gameManager: {fileID: 0}
+  nameDisp: {fileID: 2771256959967745346}
   test: 0
   layer:
     serializedVersion: 2
@@ -6520,8 +6522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0bb19b17d4d8e4c8a9450cb7a5d316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pm: {fileID: 0}
-  name: 
+  pm: {fileID: 7152696442207847948}
+  localPm: {fileID: 0}
+  userName: 
 --- !u!1 &6702350371564158494
 GameObject:
   m_ObjectHideFlags: 0
