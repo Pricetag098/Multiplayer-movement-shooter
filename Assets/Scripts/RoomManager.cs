@@ -20,7 +20,7 @@ public class RoomManager : NetworkRoomManager
 {
     public GameManager gameManager;
 	public Transform parent;
-
+	
 
    
     #region Server Callbacks
@@ -59,7 +59,8 @@ public class RoomManager : NetworkRoomManager
     /// </summary>
     /// <param name="conn">The connection that disconnected.</param>
     public override void OnRoomServerDisconnect(NetworkConnection conn) {
-        gameManager.playersConnId.Remove(conn.connectionId);
+
+		gameManager.playersConnId.Remove(conn.connectionId);
         if(gameManager.rmDict.ContainsKey(conn.connectionId))
         {
             gameManager.rmDict.Remove(conn.connectionId);
@@ -89,8 +90,8 @@ public class RoomManager : NetworkRoomManager
     public override GameObject OnRoomServerCreateRoomPlayer(NetworkConnection conn)
     {
 		print("TEST");
-        
-        GameObject player = base.OnRoomServerCreateRoomPlayer(conn);
+
+		GameObject player = base.OnRoomServerCreateRoomPlayer(conn);
         //gameManager.rmDict.Add(conn.connectionId, player.GetComponent<RoomPlayer>());
         return player;
     }
@@ -104,14 +105,11 @@ public class RoomManager : NetworkRoomManager
     /// <returns>A new GamePlayer object.</returns>
     public override GameObject OnRoomServerCreateGamePlayer(NetworkConnection conn, GameObject roomPlayer)
     {
-        
-        GameObject player = base.OnRoomServerCreateGamePlayer(conn, roomPlayer);
-        /*
-        player.GetComponent<RoomPlayer>().connId = conn.connectionId;
-        gameManager.rmDict.Add(conn.connectionId, player.GetComponent<RoomPlayer>());
-        */
-        //player.GetComponent<PlayerManager>().connId = conn.identity.connectionToClient.connectionId;
-        return player;
+
+		GameObject player = base.OnRoomServerCreateGamePlayer(conn, roomPlayer);
+		
+		//player.GetComponent<PlayerManager>().connId = conn.identity.connectionToClient.connectionId;
+		return player;
     }
 
     /// <summary>
@@ -137,10 +135,11 @@ public class RoomManager : NetworkRoomManager
     /// <returns>False to not allow this player to replace the room player.</returns>
     public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer, GameObject gamePlayer)
     {
-        
+		return true;
+		
         return base.OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer);
     }
-
+	
     /// <summary>
     /// This is called on the server when all the players in the room are ready.
     /// <para>The default implementation of this function uses ServerChangeScene() to switch to the game player scene. By implementing this callback you can customize what happens when all the players in the room are ready, such as adding a countdown or a confirmation for a group leader.</para>

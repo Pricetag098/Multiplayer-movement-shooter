@@ -66,6 +66,7 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 8343424970640807424, guid: b86484052c18a7e44a502d42387ecb04, type: 3}
+  - {fileID: 2321541035596244797, guid: 525d2eae9b187334d855ea99f4cc349d, type: 3}
   showRoomGUI: 0
   minPlayers: 1
   roomPlayerPrefab: {fileID: 2107095446987430411, guid: f6dc426db88cac8458c3334dfd97b1dd, type: 3}
@@ -76,6 +77,7 @@ MonoBehaviour:
   clientIndex: 0
   gameManager: {fileID: 0}
   parent: {fileID: 0}
+  AAA: {fileID: 0}
 --- !u!114 &7262151893141626447
 MonoBehaviour:
   m_ObjectHideFlags: 0

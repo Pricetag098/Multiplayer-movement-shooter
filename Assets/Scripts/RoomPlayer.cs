@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class RoomPlayer : NetworkBehaviour
 {
+	public string locName = "Guest";
 	public GameObject server, client;
 	public Image img,svrImg;
 
@@ -19,6 +20,10 @@ public class RoomPlayer : NetworkBehaviour
     public int connId;
     public GameManager gameManager;
 
+	[SyncVar]
+	public string uName;
+
+	
 
 	[SyncVar]
 	public bool svrIsReady;
@@ -84,18 +89,28 @@ public class RoomPlayer : NetworkBehaviour
 
 	#endregion
 	public bool isReady = false;
-
+	
     public void changeName(string name)
     {
+		locName = name;
+		CMDChangeName(name);
+		FindObjectOfType<DataStorage>().uName = name;
         //print("RoomPlayer changename");
-        gameManager.CMDChangeName(name, connId);
+        //gameManager.CMDChangeName(name, connId);
     }
+	
+	[Command]
+	public void CMDChangeName(string name)
+	{
+		uName = name;
+	}
 
     private void Start()
     {
       gameManager = FindObjectOfType<GameManager>();
     }
 
+	
 
     public void Ready()
 	{
@@ -121,6 +136,8 @@ public class RoomPlayer : NetworkBehaviour
         else
         {
             img.color = isReady ? Color.green : Color.red;
+
+			//CMDChangeName(locName);
         }
     }
 }

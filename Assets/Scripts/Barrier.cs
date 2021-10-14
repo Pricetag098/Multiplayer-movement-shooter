@@ -1,7 +1,7 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
-
+using System.Collections;
 /*
 	Documentation: https://mirror-networking.com/docs/Guides/NetworkBehaviour.html
 	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkBehaviour.html
@@ -57,5 +57,17 @@ public class Barrier : NetworkBehaviour
     /// </summary>
     public override void OnStopAuthority() { }
 
-    #endregion
+	#endregion
+	public float lifeTime = 5f;
+
+	private void Start()
+	{
+		StartCoroutine(die());
+	}
+
+	public IEnumerator die()
+	{
+		yield return new WaitForSeconds(lifeTime);
+		NetworkServer.Destroy(gameObject);
+	}
 }

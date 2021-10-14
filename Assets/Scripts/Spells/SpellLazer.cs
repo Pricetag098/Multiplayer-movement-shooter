@@ -16,7 +16,7 @@ public class SpellLazer : SpellManager.Spell
 	{
 		base.init();
 		beamGo = Resources.Load("SpawnableProjectiles/Beam") as GameObject;
-		Debug.Log(beamGo);
+		//Debug.Log(beamGo);
 		isAuto = false;
 	}
 

@@ -153,7 +153,7 @@ public class SpellManager : NetworkBehaviour
 			sm = pm.GetComponent<SpellManager>();
 			mv = pm.mv;
 			head = mv.cam;
-			cam = pm.GetComponent<Cam>();
+			cam = pm.mv.cam.GetComponent<Cam>();
 			networkManager = pm.netMan;
 			identity = pm.networkIdentity;
 			fingerTip = sm.fingerTip;
@@ -208,9 +208,9 @@ public class SpellManager : NetworkBehaviour
 		NetworkServer.Spawn(objct);
 	}
 
-    #endregion
+	#endregion
 
-    /*
+	/*
 	//healing and defence spells
 
 	public class PassiveHealingSpell : Spell
@@ -369,12 +369,12 @@ public class SpellManager : NetworkBehaviour
 	*/
 
 
-	
-
-    #endregion
 
 
-    
+	#endregion
+
+
+
 
 	private void Update()
 	{

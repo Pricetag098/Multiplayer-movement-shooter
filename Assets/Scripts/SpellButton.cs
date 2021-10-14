@@ -26,7 +26,9 @@ public class SpellButton : MonoBehaviour
     {
         Lazer,
         Projectile,
-		Barrier
+		Barrier,
+		WallHack,
+		Dash
     }
     public Spells spellSelected;
 
@@ -52,6 +54,17 @@ public class SpellButton : MonoBehaviour
 					spell = new SpellBarrier(player.GetComponent<PlayerManager>());
 					break;
 				}
+			case Spells.WallHack:
+				{
+					spell = new SpellWallHack(player.GetComponent<PlayerManager>());
+					break;
+				}
+			case Spells.Dash:
+				{
+					spell = new SpellDash(player.GetComponent<PlayerManager>());
+					break;
+				}
+
 		}
         
 	}
@@ -73,6 +86,7 @@ public class SpellButton : MonoBehaviour
 						{
 							if (spellManager.ablitys[i] == spell)
 							{
+								spellManager.ablitys[i].UnCast();
 								spellManager.ablitys[i] = null;
 								break;
 							}

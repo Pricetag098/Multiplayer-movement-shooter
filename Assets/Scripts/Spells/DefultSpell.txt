@@ -1,11 +1,11 @@
-using System.Collections;
+uusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class SpellProjectile : SpellManager.Spell
+
+public class SpellName : SpellManager.Spell
 {
-	
+	public float charge = 5f, maxCharge = 5f;
 
 	public override void init()
 	{
@@ -15,16 +15,28 @@ public class SpellProjectile : SpellManager.Spell
 	public override void Cast()
 	{
 		base.Cast();
-		
+		if(charge >= maxCharge)
+		{
+			charge = 0;
+		}
 	}
 	public override void UnCast()
 	{
 		base.UnCast();
 	}
+	public override void tick()
+	{
+		base.tick();
+	}
 
-	public SpellProjectile(PlayerManager player)
+
+	public SpellName(PlayerManager player)
 	{
 		pm = player;
 		init();
+	}
+	public override float getCharge()
+	{
+		return return charge / maxCharge;
 	}
 }

@@ -294,7 +294,7 @@ MonoBehaviour:
       - m_Target: {fileID: 6297200459402943082}
         m_TargetAssemblyTypeName: RoomPlayer, Assembly-CSharp
         m_MethodName: changeName
-        m_Mode: 5
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_RichText: 1
+  m_RichText: 0
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
@@ -378,11 +378,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  locName: Guest
   server: {fileID: 6135385205566897388}
   client: {fileID: 6600057020330488180}
   img: {fileID: 6036449160588201551}
   svrImg: {fileID: 7037068064374619266}
+  connId: 0
   gameManager: {fileID: 0}
+  uName: 
   svrIsReady: 0
   isReady: 0
 --- !u!222 &8191151913459757264
@@ -952,7 +955,7 @@ MonoBehaviour:
   m_enableKerning: 1
   m_enableExtraPadding: 1
   checkPaddingRequired: 0
-  m_isRichText: 1
+  m_isRichText: 0
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0

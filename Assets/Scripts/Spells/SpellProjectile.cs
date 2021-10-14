@@ -16,7 +16,7 @@ public class SpellProjectile : SpellManager.Spell
 	{
 		base.init();
 		//bulletGo = Resources.Load("SpawnableProjectiles/MagicProjectile") as GameObject;
-		Debug.Log(bulletGo);
+		//Debug.Log(bulletGo);
 		isAuto = true;
 	}
 
@@ -66,7 +66,7 @@ public class SpellProjectile : SpellManager.Spell
 
 	public override float getCharge()
 	{
-		return 0;
+		return 1;
 	}
 
 

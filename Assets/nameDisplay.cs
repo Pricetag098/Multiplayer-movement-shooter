@@ -9,7 +9,7 @@ public class nameDisplay : MonoBehaviour
 
     GameManager gameManager;
 
-    public string userName;
+    //public string userName;
 
     TextMeshPro text;
     // Start is called before the first frame update
@@ -19,14 +19,14 @@ public class nameDisplay : MonoBehaviour
         gameManager = pm.gameManager;
         localPm = Camera.main.GetComponentInParent<PlayerManager>();
 
-        userName = gameManager.nameDict[pm.connId];
+        
 
         if (pm.isLocalPlayer) 
         { 
             Destroy(gameObject);
             //print("A");
         }
-        text.text = userName;
+        text.text = pm.uName;
     }
 
     // Update is called once per frame

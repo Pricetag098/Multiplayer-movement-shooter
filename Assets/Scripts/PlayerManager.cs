@@ -68,7 +68,10 @@ public class PlayerManager : NetworkBehaviour
 
     public int test;
     public LayerMask layer;
-    
+
+	[SyncVar]
+	public string uName = "Guest";
+
     [SyncVar]
     public int teamCode; 
 

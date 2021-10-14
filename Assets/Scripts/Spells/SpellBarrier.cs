@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+
 public class SpellBarrier : SpellManager.Spell
 {
 	
 	string objectPath = "SpawnableProjectiles/Barrier";
+
+	
+	public float charge = 5f, maxCharge = 5f;
 
 
 	public override void init()
@@ -21,13 +24,20 @@ public class SpellBarrier : SpellManager.Spell
 	public override void Cast()
 	{
 		base.Cast();
+		
 		RaycastHit hit;
 
-		
-		if (rayCast(out hit, head.position))
+		if(charge >= maxCharge)
 		{
-			sm.CMDSpawnObject(objectPath, hit.point);
+			if (rayCast(out hit, head.position))
+			{
+				pm.handAnimator.SetTrigger("LeftPoint");
+				sm.CMDSpawnObject(objectPath, hit.point);
+				charge = 0;
+			}
+			
 		}
+		
 	}
 	public override void UnCast()
 	{
@@ -37,6 +47,7 @@ public class SpellBarrier : SpellManager.Spell
 	public override void tick()
 	{
 		base.tick();
+		charge = Mathf.Clamp(charge + Time.deltaTime, 0, maxCharge);
 	}
 
 	public SpellBarrier(PlayerManager player)
@@ -86,5 +97,9 @@ public class SpellBarrier : SpellManager.Spell
 		}
 		Hit = hit;
 		return false;
+	}
+	public override float getCharge()
+	{
+		return (charge / maxCharge);
 	}
 }
