@@ -36,7 +36,7 @@ public class SpellLazer : SpellManager.Spell
                     hit.collider.GetComponent<HitBox>().OnHit(damage, hit.point, head.transform.forward);
                 }
 
-                //do on server later
+               
                 GameObject newBeam = GameObject.Instantiate(beamGo);
                 LineRenderer lr =  newBeam.GetComponent<LineRenderer>();
                 lr.SetPosition(0, palm.position);

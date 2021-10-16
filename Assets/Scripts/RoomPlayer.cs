@@ -94,7 +94,7 @@ public class RoomPlayer : NetworkBehaviour
     {
 		locName = name;
 		CMDChangeName(name);
-		FindObjectOfType<DataStorage>().uName = name;
+		//FindObjectOfType<DataStorage>().uName = name;
         //print("RoomPlayer changename");
         //gameManager.CMDChangeName(name, connId);
     }
